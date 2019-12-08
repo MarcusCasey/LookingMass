@@ -1,0 +1,6 @@
+WriteImage.o: src/WriteImage.cpp src/../include/image.h
+ProcessImage.o: src/ProcessImage.cpp src/../include/image.h
+ReadImage.o: src/ReadImage.cpp src/../include/image.h
+driver.o: src/driver.cpp
+ReadImageHeader.o: src/ReadImageHeader.cpp src/../include/image.h
+image.o: src/image.cpp src/../include/image.h
