@@ -1,10 +1,18 @@
 #include <iostream>
+#include "../include/image.h"
 
 using namespace std;
 
-void ProcessImage();
+int writeImage(const char[], ImageType&);
+ImageType ProcessImage(const char[]);
 
 void MainMenu();
+// Since MainMenu is recursively checking made fileName global because it wasn't storing it.
+string fileName;
+ImageType newImage;
+const char* inputName = "./data_input/lenna_1.pgm";
+const char* outputName = "./data_output/TEST.pgm";
+
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +32,7 @@ void MainMenu()
 
   cout << "\n 1 - Load an image for analysis";
 
-  cout << "\n 2 - Check for gravitational lensing";
+  cout << "\n 2 - Resize image";
 
   cout << "\n 3 - Save modified image";
 
@@ -36,50 +44,50 @@ void MainMenu()
 
   cin >> selection;
 
-  string fileName;
+  // string fileName;
   switch (selection)
-
   {
+    case '1':
+    {
+      // cout << "filename:" << fileName;
+      
+      cout << "\n Enter image name + file type: ";
+      cin >> fileName;
+      cout << "\n File Loaded!\n";
+      //LoadImage();
+      MainMenu();
+    }
 
-  case '1':
-  {
-    cout << "\n Enter image name + file type: ";
-    cin >> fileName;
-    cout << "\n File Loaded!\n";
-    //LoadImage();
-    MainMenu();
-  }
+    case '2':
+    {
+      cout << "\n Running Detection Algorithm....";
+      newImage = ProcessImage(inputName);
 
-  case '2':
-  {
-    cout << "\n Running Detection Algorithm....";
+      cout << "\n Complete!";
 
-    ProcessImage();
+      MainMenu();
+    }
 
-    cout << "\n Complete!";
+    case '3':
+    {
+      cout << "\n Image Saved To Base Folder";
 
-    MainMenu();
-  }
+      //SaveImage();
+      writeImage(outputName, newImage);
+      MainMenu();
+    }
 
-  case '3':
-  {
-    cout << "\n Image Saved To Base Folder";
+    case '4':
+    {
+      cout << "\n Exiting...";
+    }
+    break;
 
-    //SaveImage();
-    MainMenu();
-  }
+    default:
+      cout << "\n Invalid selection";
 
-  case '4':
-  {
-    cout << "\n Exiting...";
-  }
-  break;
+      // no break in the default case
+    }
 
-  default:
-    cout << "\n Invalid selection";
-
-    // no break in the default case
-  }
-
-  cout << "\n";
+    cout << "\n";
 }
