@@ -1,10 +1,20 @@
 #include <iostream>
 #include <string>
 
+#include "../include/image.h"
+
 using namespace std;
 
 void ProcessImage();
+int writeImage(const char[], ImageType&);
 void MainMenu();
+ImageType ProcessImage(const char[]);
+
+string fileName;
+ImageType newImage;
+const char* inputName = "./data_input/lenna_1.pgm";
+const char* outputName = "./data_output/TEST.pgm";
+
 
 int main(int argc, char *argv[]) {
 	MainMenu();
@@ -44,17 +54,17 @@ void MainMenu() {
 				break;
 			
 			case '3':
-				cout << "\n Image Saved To Base Folder";
+				cout << "Image Saved To Base Folder" << endl;
 				SaveImage();
 				MainMenu();
 				break;
 			
 			case '4':
-				cout << "\n Exiting...";
+				cout << "Exiting..." << endl;
 				break;
 			
 			default:
-				cout << "\n Invalid selection";
+				cout << "Invalid selection" << endl;
 		}
 	}
 }

@@ -77,3 +77,18 @@ void ImageType::getPixelVal(int i, int j, int& val)
  val = pixelValue[i][j];
 }
 
+ImageType& ImageType::operator= (const ImageType& other)
+{
+  N = other.N;
+  M = other.M;
+  Q = other.Q;
+  pixelValue = new int* [N];
+
+  for(int i=0; i<N; i++) {
+    pixelValue[i] = new int[M];
+    for(int j=0; j<M; j++)
+      pixelValue[i][j] = other.pixelValue[i][j];
+  }
+  return *this;
+}
+
