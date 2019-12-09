@@ -1,70 +1,93 @@
 #include <iostream>
 #include <string>
+#include <filesystem>
+#include <sstream>
 
 #include "../include/image.h"
+#include "../include/WriteImage.h"
+#include "../include/ReadImage.h"
+#include "../include/ProcessImage.h"
 
 using namespace std;
 
-void ProcessImage();
-int writeImage(const char[], ImageType&);
-void MainMenu();
-ImageType ProcessImage(const char[]);
+void mainMenu();
 
 string fileName;
-ImageType newImage;
-const char* inputName = "./data_input/lenna_1.pgm";
-const char* outputName = "./data_output/TEST.pgm";
+Image globalImage;
+const string inputDirectory = "./UI/data_input/";
+const string defaultInputFilename = "lenna_1.pgm";
+const string outputDirectory = "./UI/data_output/";
+const string defaultOutputFilename = "TEST.pgm";
 
+void listDirectoryFiles(string directory) {
+	for(const auto & entry : filesystem::directory_iterator(directory)) {
+		stringstream ss;
+		ss << entry.path().filename();
+		string filename = ss.str();
+		filename = filename.substr(1, filename.size()-2);
+		cout << "\t" << filename << endl;
+	}
+}
 
-int main(int argc, char *argv[]) {
-	MainMenu();
+int main(/*int argc, char *argv[]*/) {
+	mainMenu();
 	return 0;
 }
 
-void MainMenu() {
-	while(true) {
+void mainMenu() {
+	bool running = true;
+
+	while(running) {
 		char selection;
 		
 		cout << "Menu" << endl;
 		cout << "========" << endl;
-		cout << "1 - Load an image for analysis" << endl;
-		cout << "2 - Check for gravitational lensing" << endl;
-		cout << "3 - Save modified image" << endl;
-		cout << "4 - Exit" << endl;
+		cout << "0 - Exit" << endl;
+		cout << "1 - List available images" << endl;
+		cout << "2 - Load an image" << endl;
+		cout << "3 - Process current image" << endl;
+		cout << "4 - Save current image" << endl;
 		cout << "Enter selection: ";
 		
 		cin >> selection;
-		string fileName;
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << endl;
 
-		switch (selection) {
+		string filename;
+
+		switch(selection) {
+			case '0':
+				cout << "Exiting..." << endl;
+				running = false;
+				break;
 			case '1':
-				cout << "Enter image name (with extension): ";
-				cin >> fileName;
-				if(LoadImage()) {
+				cout << "Files in " << inputDirectory << ":" << endl;
+				listDirectoryFiles(inputDirectory);
+				break;
+			case '2':
+				cout << "Enter image name (with extension) or leave empty to load default: ";
+				//filename = "";
+				//cin >> filename;
+				char buffer[256];
+				cin.getline(buffer, 256);
+				filename = buffer;
+				if(readImage(inputDirectory + ((filename == "") ? defaultInputFilename : filename), globalImage) >= 0) {
 					cout << "File Loaded!" << endl;
 				}
-				MainMenu();
 				break;
-
-			case '2':
-				cout << "Running Detection Algorithm...." << endl;
-				ProcessImage();
-				cout << "Complete!" << endl;
-				MainMenu();
-				break;
-			
 			case '3':
-				cout << "Image Saved To Base Folder" << endl;
-				SaveImage();
-				MainMenu();
+				cout << "Processing image...." << endl;
+				processImage(globalImage);
+				cout << "Complete!" << endl;
 				break;
-			
 			case '4':
-				cout << "Exiting..." << endl;
+				if(writeImage(outputDirectory + defaultOutputFilename, globalImage) >= 0) {
+					cout << "Image saved!" << endl;
+				}
 				break;
-			
 			default:
 				cout << "Invalid selection" << endl;
 		}
+		cout << endl << endl;
 	}
 }

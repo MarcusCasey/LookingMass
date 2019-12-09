@@ -1,70 +1,94 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <string>
+#include <regex>
 
 #include "../include/image.h"
 
-// Reads in the given name for the file and then turns the values from binary to integer
-// Stores the integer values into an array
-int readImage(const char fname[], ImageType& image)
-{
- int i, j;
- int N, M, Q;
- unsigned char *charImage;
- char header [100], *ptr;
- ifstream ifp;
+#define DEBUGGING false
 
- ifp.open(fname, ios::in | ios::binary);
+using namespace std;
 
- if (!ifp) {
-   cout << "Can't read image: " << fname << endl;
-   exit(1);
- }
+const string FORMAT_ERROR_MSG = "Something went wrong while reading the file: it appears to have the wrong format (for a PGM file)!";
 
- // read header
+void skipWhitespaces(ifstream & fin) {
+	while(true) {
+		auto c = fin.peek();
+		if(isspace(c)) {
+			fin.get();
+		} else {
+			break;
+		}
+	}
+}
 
- ifp.getline(header,100,'\n');
- if ( (header[0]!=80) ||    /* 'P' */
-      (header[1]!=53) ) {   /* '5' */
-      cout << "Image " << fname << " is not PGM" << endl;
-      exit(1);
- }
+void skipCommentLines(ifstream & fin) {
+	skipWhitespaces(fin);
+	while(fin.peek() == '#') {
+		if(DEBUGGING) {cout << "Read comment: ";}
+		int c;
+		while((c = fin.get()) != '\n') {
+			if(DEBUGGING) {cout << (char)c;}
+		}
+		if(DEBUGGING) {cout << endl;}
+		skipWhitespaces(fin);
+	}
+}
 
-ifp.getline(header,100,'\n');
- while(header[0]=='#')
-   ifp.getline(header,100,'\n');
+int readImage(string filename, Image & image) {
+	ifstream fin(filename, ios::in | ios::binary);
+	if(!fin) {
+		cerr << "Can't read image: " << filename << endl;
+		return -1;
+	}
+	
+	skipCommentLines(fin);
+	string fileType;
+	fin >> fileType;
+	if(fileType != "P5" && fileType != "P2") {
+		cerr << FORMAT_ERROR_MSG << endl;
+		cerr << "(The header contained \"" << fileType << "\")" << endl;
+		return -1;
+	}
 
- M=strtol(header,&ptr,0);
- N=atoi(ptr);
+	uint width, height;
+	ubyte2 maxGray;
+	skipCommentLines(fin);
+	fin >> width;
+	skipCommentLines(fin);
+	fin >> height;
+	skipCommentLines(fin);
+	fin >> maxGray;
+	if(DEBUGGING) {
+		cout << "width: " << width << endl;
+		cout << "height: " << height << endl;
+		cout << "maxGray: " << maxGray << endl;
+	}
+	if(!fin) {
+		cerr << FORMAT_ERROR_MSG << endl;
+		return -1;
+	}
+	
+	image.create(width, height, maxGray);
 
- ifp.getline(header,100,'\n');
- Q=strtol(header,&ptr,0);
+	uint y = 0, x = 0;
+	for(y = 0; y < height; ++y) {
+		skipCommentLines(fin);
+		for(x = 0; x < width; ++x) {
+			char pixel[2];
+			pixel[1] = (char)((maxGray >> 8) ? fin.get() : 0);
+			pixel[0] = (char)fin.get();
+			image(x, y) = *reinterpret_cast<ubyte2 *>(pixel);
+		}
+	}
 
- charImage = (unsigned char *) new unsigned char [M*N];
+	if(!fin) {
+		cerr << "There was a failure while reading the image pixels; perhaps the size is incorrect?" << endl;
+		cerr << "Stopped at " << x  << "/" << width << "," << y << "/" << height << endl;
+		return -1;
+	}
 
- ifp.read( reinterpret_cast<char *>(charImage), (M*N)*sizeof(unsigned char));
-
- if (ifp.fail()) {
-   cout << "Image " << fname << " has wrong size" << endl;
-   exit(1);
- }
-
- ifp.close();
-
- //
- // Convert the unsigned characters to integers
- //
-
- int val;
-
- for(i=0; i<N; i++)
-   for(j=0; j<M; j++) {
-     val = (int)charImage[i*M+j];
-     image.setPixelVal(i, j, val);
-   }
-
- delete [] charImage;
-
- return (1);
-
+	fin.close();
+	return 0;
 }

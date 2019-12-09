@@ -26,3 +26,10 @@
 *.out
 *.app
 */build
+
+#VS
+.vs/
+Debug/
+*.sln
+*.vcxproj
+*.vcxproj.*

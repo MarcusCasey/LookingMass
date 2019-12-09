@@ -1,53 +1,49 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <string>
 
 #include "../include/image.h"
 
-// Takes the integer values and stores them back into PGM image format.
-int writeImage(const char fname[], ImageType& image)
-{
- int i, j;
- int N, M, Q;
- unsigned char *charImage;
- ofstream ofp;
+using namespace std;
+using uint = unsigned int;
 
- image.getImageInfo(N, M, Q);
+int writeImage(string filename, const Image & image) {
+	auto [width, height] = image.getDims();
+	if(width*height == 0) {
+		cerr << "The image is empty, nothing to write!" << endl;
+		return -1;
+	}
+	ubyte2 maxGray = image.getMaxGray();
 
- charImage = (unsigned char *) new unsigned char [M*N];
-
- // convert the integer values to unsigned char
-
- int val;
-
- for(i=0; i<N; i++)
-   for(j=0; j<M; j++) {
-     image.getPixelVal(i, j, val);
-     charImage[i*M+j]=(unsigned char)val;
-   }
-
- ofp.open(fname, ios::out | ios::binary);
-
- if (!ofp) {
-   cout << "Can't open file: " << fname << endl;
-   exit(1);
- }
-
- ofp << "P5" << endl;
- ofp << M << " " << N << endl;
- ofp << Q << endl;
-
- ofp.write( reinterpret_cast<char *>(charImage), (M*N)*sizeof(unsigned char));
-
- if (ofp.fail()) {
-   cout << "Can't write image " << fname << endl;
-   exit(0);
- }
-
- ofp.close();
-
- delete [] charImage;
-
- return(1);
-
+	ofstream fout(filename, ios::out | ios::binary);
+	if(!fout) {
+		cerr << "Can't open file: " << filename << endl;
+		return -1;
+	}
+	
+	fout << "P5" << endl;
+	fout << width << " " << height << endl;
+	fout << maxGray << endl;
+	
+	//Each pixel may be written as either 1 or 2 bytes, depending on size of maxGray
+	for(uint y = 0; y < height; ++y) {
+		for(uint x = 0; x < width; ++x) {
+			//Break up each pixel value into two chars
+			char pixel[2];
+			pixel[1] = image(x, y) >> 8;
+			auto test = image(x, y) & ((1 << 8) - 1);
+			pixel[0] = image(x, y) & ((1 << 8) - 1);
+			//Omit second byte of pixel if maxGray takes up less than a byte
+			fout.write(pixel, (maxGray >> 8) ? 2 : 1);
+		}
+	}
+	
+	if(fout.fail()) {
+	  cerr << "Can't write image " << filename << endl;
+	  return -1;
+	}
+	
+	fout.close();
+	return 0;
 }

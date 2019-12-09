@@ -2,92 +2,80 @@
 
 #include "../include/image.h"
 
-ImageType::ImageType()
-{
- N = 0;
- M = 0;
- Q = 0;
-
- pixelValue = NULL;
+Image::Image() {
+	height = width = 0;
+	maxGray = 0;
+	pixels = nullptr;
 }
 
-ImageType::ImageType(int tmpN, int tmpM, int tmpQ)
-{
- int i, j;
-
- N = tmpN;
- M = tmpM;
- Q = tmpQ;
-
- pixelValue = new int* [N];
- for(i=0; i<N; i++) {
-   pixelValue[i] = new int[M];
-   for(j=0; j<M; j++)
-     pixelValue[i][j] = 0;
- }
+Image::Image(Image & other) {
+	height = other.height;
+	width = other.width;
+	maxGray = other.maxGray;
+	
+	pixels = new ubyte2[height*width];
+	for(uint y = 0; y <height; ++y) {
+		for(uint x = 0; x < width; ++x) {
+			(*this)(x, y) = other(x, y);
+		}
+	}
 }
 
-ImageType::ImageType(ImageType& oldImage)
-{
- int i, j;
-
- N = oldImage.N;
- M = oldImage.M;
- Q = oldImage.Q;
-
- pixelValue = new int* [N];
- for(i=0; i<N; i++) {
-   pixelValue[i] = new int[M];
-   for(j=0; j<M; j++)
-     pixelValue[i][j] = oldImage.pixelValue[i][j];
- }
-}
-
-ImageType::~ImageType()
-{
- int i;
-
- for(i=0; i<N; i++)
-   delete [] pixelValue[i];
- delete [] pixelValue;
+Image::~Image() {
+	reset();
 }
 
 
-void ImageType::getImageInfo(int& rows, int& cols, int& levels)
-{
- rows = N;
- cols = M;
- levels = Q;
+DIMS Image::getDims() const {
+	return {width, height};
+}
+/*void Image::setDims(uint width_, uint height_) {
+	width = width_;
+	height = height_;
+}*/
+
+ubyte2 Image::getMaxGray() const {
+	return maxGray;
+}
+/*void Image::setMaxGray(ubyte2 maxGray_) {
+	maxGray = maxGray_;
+}*/
+
+ubyte2 & Image::operator()(uint x, uint y) {
+	return pixels[x + width*y];
+}
+const ubyte2 & Image::operator()(uint x, uint y) const {
+	return pixels[x + width * y];
 }
 
-void ImageType::setImageInfo(int rows, int cols, int levels)
-{
- N= rows;
- M= cols;
- Q= levels;
+void Image::reset() {
+	width = height = 0;
+	if(pixels) {
+		delete[] pixels;
+	}
+	pixels = nullptr;
+}
+void Image::create(uint width_, uint height_, ubyte2 maxGray_) {
+	reset();
+
+	width = width_;
+	height = height_;
+	maxGray = maxGray_;
+
+	pixels = new ubyte2[height*width];
 }
 
-void ImageType::setPixelVal(int i, int j, int val)
-{
- pixelValue[i][j] = val;
-}
+Image & Image::operator=(const Image& other) {
+  height = other.height;
+  width = other.width;
+  maxGray = other.maxGray;
 
-void ImageType::getPixelVal(int i, int j, int& val)
-{
- val = pixelValue[i][j];
-}
+  pixels = new ubyte2[width*height];
 
-ImageType& ImageType::operator= (const ImageType& other)
-{
-  N = other.N;
-  M = other.M;
-  Q = other.Q;
-  pixelValue = new int* [N];
-
-  for(int i=0; i<N; i++) {
-    pixelValue[i] = new int[M];
-    for(int j=0; j<M; j++)
-      pixelValue[i][j] = other.pixelValue[i][j];
+  for(uint y = 0; y < height; ++y) {
+	  for(uint x = 0; x < width; ++x) {
+		  (*this)(x, y) = other(x, y);
+	  }
   }
   return *this;
 }
