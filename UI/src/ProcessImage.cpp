@@ -2,6 +2,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <algorithm>
+#include <math.h>
 
 #include "../include/image.h"
 
