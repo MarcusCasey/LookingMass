@@ -1,7 +1,7 @@
 appname := UI
 
 CXX := g++
-CXXFLAGS := -std=c++11
+CXXFLAGS := -std=c++17
 
 srcfiles := $(shell find . -name "*.cpp")
 objects	:= $(patsubst %.cpp, %.o, $(srcfiles))
