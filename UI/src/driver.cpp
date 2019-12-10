@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include <filesystem>
 #include <sstream>
+// #include <experimental/filesystem>
 
 #include "../include/image.h"
 #include "../include/WriteImage.h"
@@ -14,19 +14,20 @@ void mainMenu();
 
 string fileName;
 Image globalImage;
-const string inputDirectory = "./UI/data_input/";
+const string inputDirectory = "./data_input/";
 const string defaultInputFilename = "lenna_1.pgm";
-const string outputDirectory = "./UI/data_output/";
+const string outputDirectory = "./data_output/";
 const string defaultOutputFilename = "TEST.pgm";
 
 void listDirectoryFiles(string directory) {
-	for(const auto & entry : filesystem::directory_iterator(directory)) {
-		stringstream ss;
-		ss << entry.path().filename();
-		string filename = ss.str();
-		filename = filename.substr(1, filename.size()-2);
-		cout << "\t" << filename << endl;
-	}
+	// for(const auto & entry : std::experimental::filesystem::directory_iterator(directory)) {
+	// ss << entry.path().filename();
+	stringstream ss;
+	ss << inputDirectory + defaultInputFilename;
+	string filename = ss.str();
+	filename = filename.substr(1, filename.size()-2);
+	cout << "\t" << filename << endl;
+	// }
 }
 
 int main(/*int argc, char *argv[]*/) {
