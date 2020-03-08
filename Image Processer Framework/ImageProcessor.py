@@ -17,6 +17,8 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button 
 
 class Widgets(Widget):
+#    def Upload_btn(self):
+#        upload_image()
     def Process_btn(self):
         process_image()
     def Metadata_btn(self):
@@ -36,6 +38,8 @@ class MyApp(App):
     def build(self):
         return Widgets()
 
+#def upload_image():
+    # READ IN IMAGE CODE HERE
 
 def process_image():
    show_image_processing_start_popup()
