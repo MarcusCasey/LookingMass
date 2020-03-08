@@ -53,7 +53,7 @@ class Widgets(Widget):
 
         # IMAGE PROCESSING CODE HERE
 
-        self.endPopup = ProcessStartPopup(OK=self.dismiss_popup)
+        self.endPopup = ProcessEndPopup(OK=self.dismiss_popup)
         self.endPopup.show()
     def Metadata_btn(self):
         content = MetadataEntryPopup(Save=self.Save)
