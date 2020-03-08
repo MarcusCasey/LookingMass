@@ -10,75 +10,62 @@ from kivy.properties import ObjectProperty
 from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
+from kivy.factory import Factory
+import kivy.properties as ObjectP
 
 from kivy.app import App
 from kivy.uix.label import Label
 
 from kivy.uix.button import Button 
 
-class Widgets(Widget):
-#    def Upload_btn(self):
-#        upload_image()
-    def Process_btn(self):
-        process_image()
-    def Metadata_btn(self):
-        show_metadata_entry_popup()
+
+class MetadataEntryPopup(FloatLayout):
+    pass
 
 class ProcessStartPopup(FloatLayout):
-    pass
+    OK = ObjectP.ObjectProperty(None)
+    def show(self):
+        self.popupWindow = Popup(title="Image Processor", content=self, size_hint=(None,None),size=(400,400))
+        self.popupWindow.open()
+    def end(self):
+        self.popupWindow.dismiss()
 
 class ProcessEndPopup(FloatLayout):
-    pass
+    OK = ObjectP.ObjectProperty(None)
+    def show(self):
+        self.popupWindow = Popup(title="Image Processor", content=self, size_hint=(None,None),size=(400,400))
+        self.popupWindow.open()
+    def end(self):
+        self.popupWindow.dismiss()
 
 class MetadataEntryPopup(FloatLayout):
     #add method that saves text inputs to metadata class when "save" button is pressed
-    pass
+    Save = ObjectP.ObjectProperty(None)
+
+class Widgets(Widget):
+    def dismiss_popup(self):
+        self._popup.dismiss()
+#    def Upload_btn(self):
+    # UPLOAD IMAGE NOT IMPLEMENTED YET
+    def Process_btn(self):
+        self.startPopup = ProcessStartPopup(OK=self.dismiss_popup)
+        self.startPopup.show()
+
+        # IMAGE PROCESSING CODE HERE
+
+        self.endPopup = ProcessStartPopup(OK=self.dismiss_popup)
+        self.endPopup.show()
+    def Metadata_btn(self):
+        content = MetadataEntryPopup(Save=self.Save)
+        self._popup = Popup(title="Image Processor", content=content,
+                               size_hint=(None,None),size=(400,400))
+        self._popup.open()
+    def Save():
+        pass
 
 class MyApp(App):
     def build(self):
         return Widgets()
-
-#def upload_image():
-    # READ IN IMAGE CODE HERE
-
-def process_image():
-   show_image_processing_start_popup()
-
-   #PERFORM IMAGE PROCESSING HERE
-
-   show_image_processing_end_popup()
-
-
-def show_image_processing_start_popup():
-    show = ProcessStartPopup()
-
-# cant get pop ups to close when "OK" button is pressed
-#    closeButton = Button(text = "OK") 
-
-    popupWindow = Popup(title="Image Processor", content=show, size_hint=(None,None),size=(400,400))
-
-    popupWindow.open()
-
-#    closeButton.bind(on_press = popupWindow.dismiss)
-
-
-def show_image_processing_end_popup():
-    show = ProcessEndPopup()
-# cant get pop ups to close when "OK" button is pressed
-#    closeButton = Button(text = "OK") 
-
-    popupWindow = Popup(title="Image Processor", content=show, size_hint=(None,None),size=(400,400))
-
-    popupWindow.open()
-
-#    closeButton.bind(on_press = popupWindow.dismiss)
-
-def show_metadata_entry_popup():
-    show = MetadataEntryPopup()
-
-    popupWindow = Popup(title="Image Processor", content=show, size_hint=(None,None),size=(400,400))
-
-    popupWindow.open()
 
 
 if __name__ == "__main__":
