@@ -1,15 +1,20 @@
 <Widgets>:
     FloatLayout:
         Button:
-            pos_hint: {"x":0.1, "y":4.5}
-            size_hint: 2.0, 1.0
-            text: "Start Processing"
-            on_release: root.Process_btn()
+            pos_hint: {"x":0.1, "y":5.4}
+            size_hint: 2.0, 0.5
+            text: "Upload Image"
+            on_release: root.Upload_btn()
         Button:
-            pos_hint: {"x":0.1, "y":3.5}
-            size_hint: 2.0, 1.0
-            text: "Enter Metadata:"
+            pos_hint: {"x":0.1, "y":4.9}
+            size_hint: 2.0, 0.5
+            text: "Enter Metadata"
             on_release: root.Metadata_btn()
+        Button:
+            pos_hint: {"x":0.1, "y":4.4}
+            size_hint: 2.0, 0.5
+            text: "Process Image"
+            on_release: root.Process_btn()
 
 <ProcessStartPopup>:
     Label:
