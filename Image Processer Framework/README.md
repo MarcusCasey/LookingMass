@@ -12,7 +12,7 @@
 # Dependencies, Building, and Running
 
 ## Dependency Instructions
-This application currently is only supported on Linux based operating systems. This project requires the instillation of [KIVY](https://kivy.org/doc/stable/installation/installation-linux.html#installation-linux). 
+This application currently is only supported on Linux and Windows based operating systems. This project requires the instillation of [KIVY](https://kivy.org/doc/stable/installation/installation-linux.html#installation-linux). 
 
 ### Ubuntu/Linux
 ```bash
