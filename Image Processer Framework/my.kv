@@ -4,19 +4,19 @@
             pos_hint: {"x":0.1, "y":5.4}
             size_hint: 2.0, 0.5
             text: "Upload Image"
-            on_release: root.Upload_btn()
+            on_release: root.uploadImage()
         Button:
             pos_hint: {"x":0.1, "y":4.9}
             size_hint: 2.0, 0.5
             text: "Enter Metadata"
-            on_release: root.Metadata_btn()
+            on_release: root.requestMetadata()
         Button:
             pos_hint: {"x":0.1, "y":4.4}
             size_hint: 2.0, 0.5
             text: "Process Image"
-            on_release: root.Process_btn()
+            on_release: root.processImage()
 
-<ProcessStartPopup>:
+<ImageProcessingStartPopup>:
     Label:
         text: "Process Started."
         size_hint: 0.6, 0.2
@@ -29,7 +29,7 @@
         pos_hint: {"x":0.1, "y":0.1}
         on_release: root.end()
 
-<ProcessEndPopup>:
+<ImageProcessingEndPopup>:
     Label:
         text: "Process Finished."
         size_hint: 0.6, 0.2
@@ -107,3 +107,4 @@
         text: "Save"
         size_hint: 0.8, 0.2
         pos_hint: {"x":0.1, "y":0.1}
+        on_release: root.end()

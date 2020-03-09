@@ -18,48 +18,49 @@ from kivy.uix.label import Label
 
 from kivy.uix.button import Button 
 
+class MyPopup(FloatLayout):
+    title = "Default Title"
+    def __init__(self, title):
+        FloatLayout.__init__(self)
+        self.title = title
+    def show(self):
+        self.popup = Popup(title=self.title, content=self, size_hint=(None,None),size=(400,400))
+        self.popup.open()
+    def end(self):
+        self.popup.dismiss()
 
-class MetadataEntryPopup(FloatLayout):
+class MetadataEntryPopup(MyPopup):
     pass
 
-class ProcessStartPopup(FloatLayout):
-    OK = ObjectP.ObjectProperty(None)
-    def show(self):
-        self.popupWindow = Popup(title="Image Processor", content=self, size_hint=(None,None),size=(400,400))
-        self.popupWindow.open()
-    def end(self):
-        self.popupWindow.dismiss()
+class ImageProcessingStartPopup(MyPopup):
+    pass
 
-class ProcessEndPopup(FloatLayout):
-    OK = ObjectP.ObjectProperty(None)
-    def show(self):
-        self.popupWindow = Popup(title="Image Processor", content=self, size_hint=(None,None),size=(400,400))
-        self.popupWindow.open()
-    def end(self):
-        self.popupWindow.dismiss()
+class ImageProcessingEndPopup(MyPopup):
+    pass
 
-class MetadataEntryPopup(FloatLayout):
+class MetadataEntryPopup(MyPopup):
     #add method that saves text inputs to metadata class when "save" button is pressed
     Save = ObjectP.ObjectProperty(None)
 
 class Widgets(Widget):
-    def dismiss_popup(self):
-        self._popup.dismiss()
-#    def Upload_btn(self):
-    # UPLOAD IMAGE NOT IMPLEMENTED YET
-    def Process_btn(self):
-        self.startPopup = ProcessStartPopup(OK=self.dismiss_popup)
+    def uploadImage(self):
+        pass
+        # UPLOAD IMAGE NOT IMPLEMENTED YET
+    
+    def processImage(self):
+        self.startPopup = ImageProcessingStartPopup("Image Processor")
         self.startPopup.show()
-
+        
         # IMAGE PROCESSING CODE HERE
 
-        self.endPopup = ProcessEndPopup(OK=self.dismiss_popup)
+        self.startPopup.end()
+        self.endPopup = ImageProcessingEndPopup("Image Processor")
         self.endPopup.show()
-    def Metadata_btn(self):
-        content = MetadataEntryPopup(Save=self.Save)
-        self._popup = Popup(title="Image Processor", content=content,
-                               size_hint=(None,None),size=(400,400))
-        self._popup.open()
+
+    def requestMetadata(self):
+        self.metaPopup = MetadataEntryPopup("Metadata")
+        self.metaPopup.show()
+
     def Save():
         pass
 
