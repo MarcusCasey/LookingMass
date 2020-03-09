@@ -95,7 +95,9 @@ class MetadataEntryPopup(MyPopup):
             for each_line in fin:
                 loaddata = each_line
                 splitdata = loaddata.split(";")
-                loadMetadata = physicsMetadata(splitdata[0], splitdata[1], splitdata[2], splitdata[3], splitdata[4])
+                loadMetadata = physicsMetadata(splitdata[0], splitdata[1], 
+                                               splitdata[2], splitdata[3], 
+                                               splitdata[4])
     pass
 
 class ImageProcessingStartPopup(MyPopup):
