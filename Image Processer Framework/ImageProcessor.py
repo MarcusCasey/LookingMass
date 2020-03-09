@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #!/usr/bin/env python2
 
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 import kivy.properties as ObjectP
 from kivy.factory import Factory
@@ -12,6 +13,14 @@ from kivy.uix.widget import Widget
 from kivy.app import App
 import kivy
 kivy.require('1.11.1')  # replace with your current kivy version !
+
+
+class TestBox(BoxLayout):
+    pass
+
+
+class FCTest(App):
+    pass
 
 
 class MetadataEntryPopup(FloatLayout):
@@ -50,8 +59,10 @@ class MetadataEntryPopup(FloatLayout):
 class Widgets(Widget):
     def dismiss_popup(self):
         self._popup.dismiss()
-#    def Upload_btn(self):
-    # UPLOAD IMAGE NOT IMPLEMENTED YET
+
+    # def Upload_btn(self):
+
+# upload here
 
     def Process_btn(self):
         self.startPopup = ProcessStartPopup(OK=self.dismiss_popup)
@@ -79,3 +90,4 @@ class MyApp(App):
 
 if __name__ == "__main__":
     MyApp().run()
+    # FCTest().run()
