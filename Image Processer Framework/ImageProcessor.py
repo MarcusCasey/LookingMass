@@ -18,6 +18,8 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button 
 
+from PIL import Image
+import numpy as np
 
 class MetadataEntryPopup(FloatLayout):
     pass
@@ -54,6 +56,15 @@ class Widgets(Widget):
         self.startPopup.show()
 
         # IMAGE PROCESSING CODE HERE
+        file_in = "./data_input/lenna_1.png" # change to actual file path
+        image = np.array(Image.open(file_in))
+
+        red = image.copy()
+        red[:, :, (1, 2)] = 0
+
+        pil_img = Image.fromarray(red)
+        file_out = "./data_output/red.png" # change to actual file path
+        pil_img.save(file_out)
 
         self.endPopup = ProcessEndPopup(OK=self.dismiss_popup)
         self.endPopup.show()
@@ -87,6 +98,6 @@ class MyApp(App):
         button1.bind(on_release=self.stop)
         button2.bind(on_release=popup.dismiss)
         popup.open()
-        
+
 if __name__ == "__main__":
     MyApp().run()
