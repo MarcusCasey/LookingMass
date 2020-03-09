@@ -14,11 +14,8 @@ from kivy.app import App
 import kivy
 kivy.require('1.11.1')  # replace with your current kivy version !
 
-
-
 class TestBox(BoxLayout):
     pass
-
 
 class FCTest(App):
     pass
@@ -37,56 +34,41 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button 
 
+class MyPopup(FloatLayout):
+    title = "Default Title"
+    def __init__(self, title):
+        FloatLayout.__init__(self)
+        self.title = title
+    def show(self):
+        self.popup = Popup(title=self.title, content=self, size_hint=(None,None),size=(400,400))
+        self.popup.open()
+    def end(self):
+        self.popup.dismiss()
+
+class MetadataEntryPopup(MyPopup):
+    pass
+
+class ImageProcessingStartPopup(MyPopup):
+    pass
+
+class ImageProcessingEndPopup(MyPopup):
+    pass
 
 from PIL import Image
 import numpy as np
 
-class MetadataEntryPopup(FloatLayout):
-    pass
 
-
-class ProcessStartPopup(FloatLayout):
-    OK = ObjectP.ObjectProperty(None)
-
-    def show(self):
-        self.popupWindow = Popup(
-            title="Image Processor", content=self, size_hint=(None, None), size=(400, 400))
-        self.popupWindow.open()
-
-    def end(self):
-        self.popupWindow.dismiss()
-
-
-class ProcessEndPopup(FloatLayout):
-    OK = ObjectP.ObjectProperty(None)
-
-    def show(self):
-        self.popupWindow = Popup(
-            title="Image Processor", content=self, size_hint=(None, None), size=(400, 400))
-        self.popupWindow.open()
-
-    def end(self):
-        self.popupWindow.dismiss()
-
-
-class MetadataEntryPopup(FloatLayout):
-    # add method that saves text inputs to metadata class when "save" button is pressed
-    Save = ObjectP.ObjectProperty(None)
 
 
 class Widgets(Widget):
-
-    def dismiss_popup(self):
-        self._popup.dismiss()
-
-    def Upload_btn(self):
+    def uploadImage(self):
         pass
-    # UPLOAD IMAGE NOT IMPLEMENTED YET
-
-    def Process_btn(self):
-        self.startPopup = ProcessStartPopup(OK=self.dismiss_popup)
+        # UPLOAD IMAGE NOT IMPLEMENTED YET
+    
+    def processImage(self):
+        self.startPopup = ImageProcessingStartPopup("Image Processor")
         self.startPopup.show()
-
+        
         # IMAGE PROCESSING CODE HERE
         file_in = "./data_input/lenna_1.png" # change to actual file path
         image = np.array(Image.open(file_in))
@@ -98,14 +80,14 @@ class Widgets(Widget):
         file_out = "./data_output/red.png" # change to actual file path
         pil_img.save(file_out)
 
-        self.endPopup = ProcessEndPopup(OK=self.dismiss_popup)
+        self.startPopup.end()
+        self.endPopup = ImageProcessingEndPopup("Image Processor")
         self.endPopup.show()
 
-    def Metadata_btn(self):
-        content = MetadataEntryPopup(Save=self.Save)
-        self._popup = Popup(title="Image Processor", content=content,
-                            size_hint=(None, None), size=(400, 400))
-        self._popup.open()
+
+    def requestMetadata(self):
+        self.metaPopup = MetadataEntryPopup("Metadata")
+        self.metaPopup.show()
 
     def Save():
         pass
