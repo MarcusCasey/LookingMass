@@ -16,6 +16,8 @@ This application currently is only supported on Linux and Windows based operatin
 
 ### Ubuntu/Linux
 ```bash
+pip install pillow
+pip install numpy
 python3 -m pip install --upgrade --user pip setuptools virtualenv
 python3 -m virtualenv ~/kivy_venv
 source ~/kivy_venv/bin/activate
@@ -24,6 +26,8 @@ python -m pip install ffpyplayer
 ```
 ### Windows OS
 ```bash
+pip install pillow
+pip install numpy
 python -m pip install --upgrade pip wheel setuptools virtualenv
 python -m virtualenv kivy_venv
 kivy_venv\Scripts\activate
