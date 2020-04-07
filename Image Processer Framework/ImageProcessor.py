@@ -38,19 +38,26 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button 
 from kivy.uix.textinput import TextInput
+from kivy.base import EventLoop
 
 class MyPopup(FloatLayout):
-    title = "Default Title"
-    def __init__(self, title):
+    defaultText = "Default text"
+    defaultTitle = "Default title"
+    def __init__(self, text = defaultText, title = defaultTitle):
+        self.text = text
         FloatLayout.__init__(self)
         self.title = title
     def show(self):
-        self.popup = Popup(title=self.title, content=self, size_hint=(None,None),size=(500,500))
+        self.popup = Popup(content=self, title = self.title, size_hint=(None,None), size=(400,400))
         self.popup.open()
     def end(self):
         self.popup.dismiss()
+    def getText(self):
+        return self.text
 
 class MetadataEntryPopup(MyPopup):
+    defaultTitle = "Metadata Entry"
+
     Metadata1 = ObjectProperty()
     Metadata2 = ObjectProperty()
     Metadata3 = ObjectProperty()
@@ -80,7 +87,8 @@ class MetadataEntryPopup(MyPopup):
         print("Loading metadata")
         self.load()
        
-
+    def __init__(self, text, title = defaultTitle):
+        MyPopup.__init__(self, text, title)
 
     def save(self):
         with open("physics_metadata.txt", "w") as fout:
@@ -101,9 +109,21 @@ class MetadataEntryPopup(MyPopup):
     pass
 
 class ImageProcessingStartPopup(MyPopup):
+    defaultTitle = "Image Processing has Begun"
+    def __init__(self, text, title = defaultTitle):
+        MyPopup.__init__(self, text, title)
     pass
 
 class ImageProcessingEndPopup(MyPopup):
+    defaultTitle = "Image Processing has Ended"
+    def __init__(self, text, title = defaultTitle):
+        MyPopup.__init__(self, text, title)
+    pass
+
+class ErrorPopup(MyPopup):
+    defaultTitle = "An Error has Occurred"
+    def __init__(self, text, title = defaultTitle):
+        MyPopup.__init__(self, text, title)
     pass
 
 def invalidForm():
@@ -113,46 +133,73 @@ def invalidForm():
 
 class Widgets(Widget):
 
+    unsavedData = False
+
     def uploadImage(self):
         pass
         # UPLOAD IMAGE NOT IMPLEMENTED YET
     
+    def load(self, filename):
+        try:
+            self.imageArray = np.array(Image.open(filename))
+            return True
+        except Exception as error:
+            self.errorPopup = ErrorPopup(text="Error in reading file:\n" + type(error).__name__ + ":\n" + error.__str__());
+            self.errorPopup.show()
+            return False
+
+    def save(self, filename):
+        try:
+            self.pil_img.save(filename)
+            return True
+        except Exception as error:
+            self.errorPopup = ErrorPopup(text="Error in writing file:\n" + type(error).__name__ + ":\n" + error.__str__());
+            self.errorPopup.show()
+            return False
+        pass
+    
+    def loadImage(self):
+        success = self.load("./data_input/lenna_1.png") # change to actual file path
+        if not success:
+            return
+
+    def saveImage(self):
+        self.pil_img = Image.fromarray(self.imageArray2)
+        self.save("./data_output/red.png") # change to actual file path
+        self.unsavedData = False
+
     def processImage(self):
         self.startPopup = ImageProcessingStartPopup("Image Processor")
         self.startPopup.show()
         
         # IMAGE PROCESSING CODE HERE
-        file_in = "./data_input/lenna_1.png" # change to actual file path
-        image = np.array(Image.open(file_in))
+        
+        self.imageArray2 = self.imageArray.copy()
+        self.imageArray2[:, :, (1, 2)] = 0
 
-        red = image.copy()
-        red[:, :, (1, 2)] = 0
-
-        pil_img = Image.fromarray(red)
-        file_out = "./data_output/red.png" # change to actual file path
-        pil_img.save(file_out)
+        self.unsavedData = True
 
         self.startPopup.end()
         self.endPopup = ImageProcessingEndPopup("Image Processor")
         self.endPopup.show()
 
-
     def requestMetadata(self):
         self.metaPopup = MetadataEntryPopup("Metadata")
         self.metaPopup.show()
-
-    def Save():
-        pass
 
 
 class MyApp(App):
     def build(self):
         self.title = 'Looking Mass'
         Window.bind(on_request_close=self.on_request_close)
-        return Widgets()
+        self.widget = Widgets()
+        return self.widget
 
     def on_request_close(self, *args):
-        self.ExitPopup(title = "Exit", text = "Are you sure you want to exit? Unsaved work may be lost.")
+        if(self.widget.unsavedData):
+            self.ExitPopup(title = "Exit", text = "Are you sure you want to exit? Unsaved work may be lost.")
+        else:
+            self.stop()
         return True
 
     def ExitPopup(self, title='', text=''):
