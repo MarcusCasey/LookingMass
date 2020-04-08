@@ -15,6 +15,7 @@
             size_hint: 2.0, 0.5
             text: "Process Image"
             on_release: root.processImage()
+
         Button:
             pos_hint: {"x":0.1, "y":3.9}
             size_hint: 2.0, 0.5
@@ -24,6 +25,38 @@
             pos_hint: {"x":0.1, "y":3.4}
             size_hint: 2.0, 0.5
             text: "News"
+
+        Label:
+            id: pre_processed_image_label
+            text: "Original Image:"
+            font_size: 36
+            size_hint: 0.6, 0.2
+            pos_hint: {"x":3.4, "y":4.5}
+            opacity: 0
+        Image: 
+            id: pre_processed_image
+            source: ""
+            # keep_ratio: False
+            allow_stretch: True
+            size_hint: 2.5, 2.5
+            pos_hint: {"x":5.4, "y":3.4}
+            opacity: 0
+        Label:
+            id: post_processed_image_label
+            text: "Modified Image:"
+            font_size: 36
+            size_hint: 0.6, 0.2
+            pos_hint: {"x":3.4, "y":1.5}
+            opacity: 0
+        Image: 
+            id: post_processed_image
+            source: ""
+            # keep_ratio: False
+            allow_stretch: True
+            size_hint: 2.5, 2.5
+            pos_hint: {"x":5.4, "y":0.4}
+            opacity: 0
+
 
 <MyPopup>:
     Label:
