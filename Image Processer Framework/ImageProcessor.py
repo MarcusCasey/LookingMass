@@ -147,7 +147,7 @@ class Widgets(Widget):
     
     def load(self, filename):
         try:
-            self.imageArray = np.array(Image.open(filename))
+            self.imageArray = np.array(PIL_Image.open(filename))
             return True
         except Exception as error:
             self.errorPopup = ErrorPopup(text="Error in reading file:\n" + type(error).__name__ + ":\n" + error.__str__());
@@ -170,7 +170,7 @@ class Widgets(Widget):
             return
 
     def saveImage(self):
-        self.pil_img = Image.fromarray(self.imageArray2)
+        self.pil_img = PIL_Image.fromarray(self.imageArray2)
         self.save("./data_output/red.png") # change to actual file path
         self.unsavedData = False
 
