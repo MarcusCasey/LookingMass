@@ -2,11 +2,12 @@
 #!/usr/bin/env python2
 
 from metadata import *
-from PIL import Image
+from PIL import Image as PIL_Image #needed as we now have multiple libraries that use "Image"
 import numpy as np
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.image import Image as Kivy_Image
 import kivy.properties as ObjectP
 from kivy.factory import Factory
 from kivy.uix.popup import Popup
@@ -116,6 +117,11 @@ class Widgets(Widget):
     def uploadImage(self):
         pass
         # UPLOAD IMAGE NOT IMPLEMENTED YET
+        self.ids.pre_processed_image_label.opacity = 1
+        self.ids.pre_processed_image.source = './data_input/lenna_1.png' # change to actual file path
+        self.ids.pre_processed_image.opacity = 1
+        self.ids.post_processed_image_label.opacity = 0
+        self.ids.post_processed_image.opacity = 0
     
     def processImage(self):
         self.startPopup = ImageProcessingStartPopup("Image Processor")
@@ -123,14 +129,18 @@ class Widgets(Widget):
         
         # IMAGE PROCESSING CODE HERE
         file_in = "./data_input/lenna_1.png" # change to actual file path
-        image = np.array(Image.open(file_in))
+        image = np.array(PIL_Image.open(file_in))
 
         red = image.copy()
         red[:, :, (1, 2)] = 0
 
-        pil_img = Image.fromarray(red)
+        pil_img = PIL_Image.fromarray(red)
         file_out = "./data_output/red.png" # change to actual file path
         pil_img.save(file_out)
+
+        self.ids.post_processed_image_label.opacity = 1
+        self.ids.post_processed_image.source = './data_output/red.png' # change to actual file path
+        self.ids.post_processed_image.opacity = 1
 
         self.startPopup.end()
         self.endPopup = ImageProcessingEndPopup("Image Processor")
