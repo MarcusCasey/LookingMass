@@ -34,3 +34,4 @@ Debug/
 *.vcxproj
 *.vcxproj.*
 UI/UI
+test.py
