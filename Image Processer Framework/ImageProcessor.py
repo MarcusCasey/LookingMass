@@ -6,18 +6,24 @@ from PIL import Image as PIL_Image #needed as we now have multiple libraries tha
 import numpy as np
 import math
 
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.image import Image as Kivy_Image
 import kivy.properties as ObjectP
-from kivy.factory import Factory
-from kivy.uix.popup import Popup
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.label import Label
-from kivy.properties import ObjectProperty
 from kivy.uix.widget import Widget
 from kivy.app import App
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty
+from kivy.uix.label import Label
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.popup import Popup
+from kivy.core.window import Window
+from kivy.factory import Factory
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.screenmanager import ScreenManager, Screen
 import kivy
+
+
 kivy.require('1.11.1')  # replace with your current kivy version !
 
 class TestBox(BoxLayout):
@@ -26,28 +32,17 @@ class TestBox(BoxLayout):
 class FCTest(App):
     pass
 
-from kivy.app import App
-from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty
-from kivy.uix.label import Label
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.popup import Popup
-from kivy.core.window import Window
-from kivy.factory import Factory
-from kivy.uix.boxlayout import BoxLayout
-import kivy.properties as ObjectP
-from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.button import Button 
-from kivy.uix.textinput import TextInput
+POPUPSIZE = (500,500)
+PIXELCOORD = (0,0)
 
 class MyPopup(FloatLayout):
     title = "Default Title"
+
     def __init__(self, title):
         FloatLayout.__init__(self)
         self.title = title
     def show(self):
-        self.popup = Popup(title=self.title, content=self, size_hint=(None,None),size=(500,500))
+        self.popup = Popup(title=self.title, content=self, size_hint=(None,None),size= POPUPSIZE)
         self.popup.open()
     def end(self):
         self.popup.dismiss()
@@ -107,6 +102,11 @@ class ImageProcessingStartPopup(MyPopup):
 
 class ImageProcessingEndPopup(MyPopup):
     pass
+
+class GravLens_GeneratorPopup(MyPopup):
+    # def()
+    pass
+
 
 def invalidForm():
     pop = Popup(title='Invalid Form',
@@ -263,9 +263,31 @@ class Widgets(Widget):
         self.metaPopup = MetadataEntryPopup("Metadata")
         self.metaPopup.show()
 
+    def GravLens_Generator(self):
+        self.startPopup = GravLens_GeneratorPopup("Gravitational Lensing Generator")
+        self.startPopup.show()
+
+        imageSize = self.startPopup.ids.GravLens_Image.size
+
+        
+        def on_mouse_pos(self, pos):
+            newWindowSize = ( (Window.size[0] - imageSize[0])//2, (Window.size[1] - imageSize[1])//2 + imageSize[1])
+            newOrigin = (int(pos[0] - newWindowSize[0]), int(newWindowSize[1] - pos[1]))
+            # print(pos)
+            # print(Window.size)
+            # print(POPUPSIZE)
+            # print(newWindowSize)
+            # if newOrigin[0] >= 0 and newOrigin[1] >= 0 and newOrigin[0] <= imageSize[0] and newOrigin[1] <= imageSize[1]:
+            #     print(newOrigin)
+            #     PIXELCOORD = str(newOrigin)
+        
+        # self.startPopup.ids.GravLens_Image.PixelCoord = PixelCoord
+        Window.bind(mouse_pos = on_mouse_pos)
+        self.startPopup.ids.GravLens_Image.source = './data_input/hubbledeepspace.jpg' # change to actual file path      
+
+
     def Save():
         pass
-
 
 class MyApp(App):
     def build(self):
