@@ -4,6 +4,7 @@
 from metadata import *
 from PIL import Image as PIL_Image #needed as we now have multiple libraries that use "Image"
 import numpy as np
+import math
 
 from kivy.uix.button import Button
 from kivy.uix.image import Image as Kivy_Image
@@ -112,6 +113,86 @@ def invalidForm():
                   content=Label(text='Please fill in all inputs with valid information.'),
                   size_hint=(None, None), size=(400, 400))
 
+def polarCoords(dx, dy):
+        return (math.sqrt(dx**2 + dy**2), math.atan2(dy, dx))
+
+def cartCoords(r, th):
+    return (r*math.cos(th), r*math.sin(th))
+
+def averageColor(imageArray):
+    aveColor = (0, 0, 0)
+    imageWidth = len(imageArray)
+    imageHeight = len(imageArray[0])
+    for x in range(imageWidth):
+        for y in range(imageHeight):
+            aveColor += imageArray[x, y]
+    for color in range(2):
+        aveColor[color] /= imageWidth*imageHeight
+    return aveColor
+
+def getPixel(imageArray, x, y, oobColor = (0, 0, 0)):
+    try:
+        return imageArray[math.floor(x), math.floor(y), :]
+    except:
+        return oobColor
+
+def magnifyIntensity(pixel, mag):
+    for color in range(3):
+        if pixel[color] * mag > 255:
+            pixel[color] = 255
+        else:
+            pixel[color] *= mag
+    return pixel
+
+def gravLens(imageArray, centerX = 0.5, centerY = 0.5, thetaE = 0.1):
+    imageWidth = len(imageArray)
+    imageHeight = len(imageArray[0])
+    centerX *= imageWidth
+    centerY *= imageHeight
+    thetaE *= min(imageWidth, imageHeight)
+
+    modifiedImageArray = imageArray.copy()
+
+    aveColor = averageColor(imageArray)
+
+    for x in range(imageWidth):
+        for y in range(imageHeight):
+            dx = x - centerX
+            dy = y - centerY
+            # theta is the "angle" coordinate from the gravlens source to the image, using small angle approximation
+            # t is the angle from the +x axis
+            theta, t = polarCoords(dx, dy)
+
+            if theta < 1.e-7:
+                beta = math.inf
+                u = 1
+                mag = 0
+            else:
+                # beta is the "angle" coordinate from the gravlens source to the source, using small angle approximation
+                beta = (theta**2 - thetaE**2) / theta
+
+                dx_, dy_ = cartCoords(beta, t)
+                modifiedImageArray[x, y, :] = getPixel(imageArray, dx_ + centerX, dy_ + centerY, aveColor)
+
+                u = abs(beta) / math.sqrt(beta**2 + 4*thetaE**2)
+
+                mag = 1
+                if u < 1.e-7:
+                    pass
+                elif False:
+                    mag = (u + 1/u)/2
+                elif theta < thetaE:
+                    mag = (u + 1/u - 2)/4
+                else:
+                    mag = (u + 1/u + 2)/4
+
+            cap = 5
+            mag = cap * mag / (cap + mag)
+
+            modifiedImageArray[x, y, :] = magnifyIntensity(modifiedImageArray[x, y, :], mag)
+
+    return modifiedImageArray
+
 class Widgets(Widget):
 
     def uploadImage(self):
@@ -123,6 +204,35 @@ class Widgets(Widget):
         self.ids.post_processed_image_label.opacity = 0
         self.ids.post_processed_image.opacity = 0
     
+    def load(self, filename):
+        try:
+            self.imageArray = np.array(PIL_Image.open(filename))
+            return True
+        except Exception as error:
+            self.errorPopup = ErrorPopup(text="Error in reading file:\n" + type(error).__name__ + ":\n" + error.__str__());
+            self.errorPopup.show()
+            return False
+
+    def save(self, filename):
+        try:
+            self.pil_img.save(filename)
+            return True
+        except Exception as error:
+            self.errorPopup = ErrorPopup(text="Error in writing file:\n" + type(error).__name__ + ":\n" + error.__str__());
+            self.errorPopup.show()
+            return False
+        pass
+    
+    def loadImage(self):
+        success = self.load("./data_input/lenna_1.png") # change to actual file path
+        if not success:
+            return
+
+    def saveImage(self):
+        self.pil_img = PIL_Image.fromarray(self.imageArray2)
+        self.save("./data_output/red.png") # change to actual file path
+        self.unsavedData = False
+
     def processImage(self):
         self.startPopup = ImageProcessingStartPopup("Image Processor")
         self.startPopup.show()
@@ -131,8 +241,10 @@ class Widgets(Widget):
         file_in = "./data_input/lenna_1.png" # change to actual file path
         image = np.array(PIL_Image.open(file_in))
 
-        red = image.copy()
-        red[:, :, (1, 2)] = 0
+        red = gravLens(image, 0.4, 0.4, 0.15)
+
+        #red = image.copy()
+        #red[:, :, (0, 2)] = 0
 
         pil_img = PIL_Image.fromarray(red)
         file_out = "./data_output/red.png" # change to actual file path
