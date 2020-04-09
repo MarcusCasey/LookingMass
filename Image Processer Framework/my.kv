@@ -15,6 +15,11 @@
             size_hint: 2.0, 0.5
             text: "Process Image"
             on_release: root.processImage()
+        Button:
+            pos_hint: {"x":0.1, "y":3.9}
+            size_hint: 2.0, 0.5
+            text: "Generate Lensing"
+            on_release: root.GravLens_Generator()
         Label:
             id: pre_processed_image_label
             text: "Original Image:"
@@ -149,3 +154,39 @@
         size_hint: 0.8, 0.2
         pos_hint: {"x":0.1, "y":0.1}
         on_release: root.store_metadata()
+        on_release: root.end()
+
+<GravLens_GeneratorPopup>:
+    Image: 
+        id: GravLens_Image
+        source: ""
+        # keep_ratio: False
+        allow_stretch: False
+        size_hint: 0.8, 0.8
+        pos_hint: {"x":0.1, "y":0.13}
+        opacity: 1
+
+    Label:
+        text: "Click to apply lensing"
+        size_hint: 0.6, 0.2
+        pos_hint: {"x":0.2, "top":1.05}
+
+    Label: 
+        text: "Pixel Coord"
+        pos_hint: {"x":0.62, "y":0.07}
+        size_hint: 0.4, 0.07
+        font_size: 12
+
+    TextInput:
+        id: fetch_pixelcoord
+        pos_hint: {"x":0.77, "y":0.02}
+        size_hint: 0.1, 0.05
+        id: PixelCoord1
+        multiline: False
+        font_size: 8
+
+    Button:
+        text: "Apply"
+        size_hint: 0.4, 0.1
+        pos_hint: {"x":0.3, "y":0.01}
+        on_release: root.end()
