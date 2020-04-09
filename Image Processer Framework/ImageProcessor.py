@@ -125,14 +125,14 @@ def averageColor(imageArray):
     imageHeight = len(imageArray[0])
     for x in range(imageWidth):
         for y in range(imageHeight):
-            aveColor += imageArray[x, y]
+            aveColor += imageArray[x, y, 0:3]
     for color in range(2):
         aveColor[color] /= imageWidth*imageHeight
     return aveColor
 
 def getPixel(imageArray, x, y, oobColor = (0, 0, 0)):
     try:
-        return imageArray[math.floor(x), math.floor(y), :]
+        return imageArray[math.floor(x), math.floor(y), 0:3]
     except:
         return oobColor
 
@@ -172,26 +172,26 @@ def gravLens(imageArray, centerX = 0.5, centerY = 0.5, thetaE = 0.1):
                 beta = (theta**2 - thetaE**2) / theta
 
                 dx_, dy_ = cartCoords(beta, t)
-                modifiedImageArray[x, y, :] = getPixel(imageArray, dx_ + centerX, dy_ + centerY, aveColor)
+                modifiedImageArray[x, y, 0:3] = getPixel(imageArray, dx_ + centerX, dy_ + centerY, aveColor)
 
                 u = abs(beta) / math.sqrt(beta**2 + 4*thetaE**2)
 
                 mag = 1
                 if u < 1.e-7:
                     pass
-                elif False:
-                    mag = (u + 1/u)/2
-                elif theta < thetaE:
-                    mag = (u + 1/u - 2)/4
-                else:
+                elif True:
                     mag = (u + 1/u + 2)/4
 
             cap = 5
             mag = cap * mag / (cap + mag)
 
-            modifiedImageArray[x, y, :] = magnifyIntensity(modifiedImageArray[x, y, :], mag)
+            modifiedImageArray[x, y, 0:3] = magnifyIntensity(modifiedImageArray[x, y, 0:3], mag)
 
     return modifiedImageArray
+
+folderIn = "./data_input/"
+folderOut = "./data_output/"
+filename = "lenna_1.png"
 
 class Widgets(Widget):
 
@@ -199,7 +199,7 @@ class Widgets(Widget):
         pass
         # UPLOAD IMAGE NOT IMPLEMENTED YET
         self.ids.pre_processed_image_label.opacity = 1
-        self.ids.pre_processed_image.source = './data_input/lenna_1.png' # change to actual file path
+        self.ids.pre_processed_image.source = folderIn + filename # change to actual file path
         self.ids.pre_processed_image.opacity = 1
         self.ids.post_processed_image_label.opacity = 0
         self.ids.post_processed_image.opacity = 0
@@ -224,34 +224,29 @@ class Widgets(Widget):
         pass
     
     def loadImage(self):
-        success = self.load("./data_input/lenna_1.png") # change to actual file path
+        success = self.load(folderIn + filename) # change to actual file path
         if not success:
             return
 
     def saveImage(self):
         self.pil_img = PIL_Image.fromarray(self.imageArray2)
-        self.save("./data_output/red.png") # change to actual file path
+        self.save(folderOut + filename) # change to actual file path
         self.unsavedData = False
 
     def processImage(self):
         self.startPopup = ImageProcessingStartPopup("Image Processor")
         self.startPopup.show()
-        
+
         # IMAGE PROCESSING CODE HERE
-        file_in = "./data_input/lenna_1.png" # change to actual file path
-        image = np.array(PIL_Image.open(file_in))
+        self.loadImage()
+        modifiedImageArray = gravLens(self.imageArray, 0.4, 0.4, 0.15)
 
-        red = gravLens(image, 0.4, 0.4, 0.15)
-
-        #red = image.copy()
-        #red[:, :, (0, 2)] = 0
-
-        pil_img = PIL_Image.fromarray(red)
-        file_out = "./data_output/red.png" # change to actual file path
+        pil_img = PIL_Image.fromarray(modifiedImageArray)
+        file_out = folderOut + filename # change to actual file path
         pil_img.save(file_out)
 
         self.ids.post_processed_image_label.opacity = 1
-        self.ids.post_processed_image.source = './data_output/red.png' # change to actual file path
+        self.ids.post_processed_image.source = file_out # change to actual file path
         self.ids.post_processed_image.opacity = 1
 
         self.startPopup.end()
