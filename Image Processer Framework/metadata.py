@@ -1,24 +1,22 @@
 
-def physicsMetadata(Star, System, starCluster, Galaxy, galaxyCluster):
+class physicsMetadata:
 
-    # Holds the name and information for the observed image star in a class struct. 
-    nameOfStar = Star
-    print("Name of Star:", nameOfStar)
+    # Mass of the Gravitational Source
+    massofGS = 0.0
 
-    # Holds the name and information for the observed image star in a class struct. 
-    nameOfSystem = System
-    print("Name of System:", nameOfSystem ) 
+    # Distance from Observer to Source
+    distanceOtoS = 0.0
 
-    # Holds the name and information for the observed star cluster in a class struct. 
-    nameOfStarCluster = starCluster
-    print("Name of Star Cluster:", nameOfStarCluster)
+    # Distance from Observer to Image
+    distanceOtoI = 0.0
 
-    # Holds the name and information for the observed image in Galaxy in a class struct. 
-    nameOfGalaxy = Galaxy
-    print("Name of Galaxy:", nameOfGalaxy)
+    # Source image from User
+    sourceFile = ' '
+    print("Name of File Input:", sourceFile)
 
-    # Holds the name and information for the observed image in a Galaxy Cluster.
-    nameOfGalaxyCluster = galaxyCluster
-    print("Name of Galaxy Cluster:", nameOfGalaxyCluster)
+    # Pixel Coordinates associated with gravitaional lensing
+    pixelCoordinates = (0,0)
+
+    saveCoordinate = False
 
 

@@ -5,18 +5,24 @@ from PIL import Image as PIL_Image #needed as we now have multiple libraries tha
 import numpy as np
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
+import os
 
-folderIn = "./data_input/"
+folderIn = os.getcwd()
 folderOut = "./data_output/"
-filename = "lenna_1.png"
+filename = "hubbledeepspace.jpg"
 
 class Widgets(Widget):
 
     def uploadImage(self):
+        self.startPopup = LoadDialog(filters = '', path = folderIn)
+        self.startPopup.open()
+        # def on_mouse_pos(self, pos):
+
+    def showImage(self):
         pass
         # UPLOAD IMAGE NOT IMPLEMENTED YET
         self.ids.pre_processed_image_label.opacity = 1
-        self.ids.pre_processed_image.source = folderIn + filename # change to actual file path
+        self.ids.pre_processed_image.source = loadMetadata.sourceFile # change to actual file path
         self.ids.pre_processed_image.opacity = 1
         self.ids.post_processed_image_label.opacity = 0
         self.ids.post_processed_image.opacity = 0
@@ -41,7 +47,7 @@ class Widgets(Widget):
         pass
     
     def loadImage(self):
-        success = self.load(folderIn + filename) # change to actual file path
+        success = self.load(loadMetadata.sourceFile) # change to actual file path
         if not success:
             return
 
@@ -56,7 +62,7 @@ class Widgets(Widget):
 
         # IMAGE PROCESSING CODE HERE
         self.loadImage()
-        modifiedImageArray = gravLens(self.imageArray, 0.4, 0.4, 0.15)
+        modifiedImageArray = gravLens(self.imageArray, loadMetadata.pixelCoordinates[1], loadMetadata.pixelCoordinates[0], 0.15)
 
         pil_img = PIL_Image.fromarray(modifiedImageArray)
         file_out = folderOut + filename # change to actual file path
@@ -69,30 +75,31 @@ class Widgets(Widget):
         self.endPopup = ImageProcessingEndPopup("Image Processor")
         self.endPopup.show()
 
-
     def requestMetadata(self):
         self.metaPopup = MetadataEntryPopup("Metadata")
         self.metaPopup.show()
 
     def GravLens_Generator(self):
-        self.startPopup = GravLens_GeneratorPopup("Gravitational Lensing Generator")
+        self.startPopup = GravLens_GeneratorPopup("Lensing Coordinate Entry")
         self.startPopup.show()
-
         imageSize = self.startPopup.ids.GravLens_Image.size
-
         
-        def on_mouse_pos(self, pos):
+        def on_mouse_pos(self, pos): # move the zero right 15 and down 5
             newWindowSize = ( (Window.size[0] - imageSize[0])//2, (Window.size[1] - imageSize[1])//2 + imageSize[1])
-            newOrigin = (int(pos[0] - newWindowSize[0]), int(newWindowSize[1] - pos[1]))
+            newOrigin = (int(pos[0] - newWindowSize[0] - 15), int(newWindowSize[1] - pos[1] - 2))
             # print(pos)
             # print(Window.size)
             # print(POPUPSIZE)
             # print(newWindowSize)
-            # if newOrigin[0] >= 0 and newOrigin[1] >= 0 and newOrigin[0] <= imageSize[0] and newOrigin[1] <= imageSize[1]:
-            #     print(newOrigin)
-            #     PIXELCOORD = str(newOrigin)
-        
+            if newOrigin[0] >= 0 and newOrigin[1] >= 0 and newOrigin[0] + 30 <= imageSize[0] and newOrigin[1] + 2 <= imageSize[1]:
+                # print(newOrigin)
+                if(loadMetadata.saveCoordinate == True):
+                    loadMetadata.pixelCoordinates = (2 * newOrigin[0], 2 * newOrigin[1])
+                    loadMetadata.saveCoordinate = False
+                # print(loadMetadata.pixelCoordinates)
+            
         # self.startPopup.ids.GravLens_Image.PixelCoord = PixelCoord
         Window.bind(mouse_pos = on_mouse_pos)
-        self.startPopup.ids.GravLens_Image.source = './data_input/hubbledeepspace.jpg' # change to actual file path      
+        self.startPopup.ids.GravLens_Image.source = loadMetadata.sourceFile # change to actual file path      
+   
 
