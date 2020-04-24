@@ -1,3 +1,8 @@
+#: import Factory kivy.factory.Factory
+#: import pathlib pathlib
+#: import drivepath drivepath
+#: import classdefs classdefs
+
 <Widgets>:
     FloatLayout:
         Button:
@@ -8,18 +13,24 @@
         Button:
             pos_hint: {"x":0.1, "y":4.9}
             size_hint: 2.0, 0.5
-            text: "Enter Metadata"
-            on_release: root.requestMetadata()
+            text: "Show Image"
+            on_release: root.showImage()
         Button:
             pos_hint: {"x":0.1, "y":4.4}
             size_hint: 2.0, 0.5
-            text: "Process Image"
-            on_release: root.processImage()
+            text: "Enter Metadata"
+            on_release: root.requestMetadata()
         Button:
             pos_hint: {"x":0.1, "y":3.9}
             size_hint: 2.0, 0.5
-            text: "Generate Lensing"
+            text: "Lensing Coordinate Entry"
             on_release: root.GravLens_Generator()
+        Button:
+            pos_hint: {"x":0.1, "y":3.4}
+            size_hint: 2.0, 0.5
+            text: "Process Image"
+            on_release: root.processImage()
+        
         Label:
             id: pre_processed_image_label
             text: "Original Image:"
@@ -81,8 +92,6 @@
     data1: Metadata1.text
     data2: Metadata2.text
     data3: Metadata3.text
-    data4: Metadata4.text
-    data5: Metadata5.text
 
     Label:
         text: "Enter Metadata"
@@ -90,69 +99,69 @@
         pos_hint: {"x":0.2, "top":1}
 
     Label:
-        text: "Name of Star:"
+        text: "Mass of the Gravitational Source:"
         size_hint: 0.4, 0.05
         pos_hint: {"x":0.1, "top":0.8}
 
     TextInput:
-        pos_hint: {"x":0.5, "top":0.8}
+        pos_hint: {"x":0.5, "top":0.7}
         size_hint: 0.4, 0.07
         id: Metadata1
         multiline: False
         font_size: 12
 
     Label:
-        text: "Name of System:"
+        text: "Distance from Observer to Source:"
         size_hint: 0.4, 0.05
-        pos_hint: {"x":0.1, "top":0.7}
+        pos_hint: {"x":0.1, "top":0.6}
 
     TextInput:
-        pos_hint: {"x":0.5, "top":0.7}
+        pos_hint: {"x":0.5, "top":0.5}
         size_hint: 0.4, 0.07
         id: Metadata2
         multiline: False
         font_size: 12
     
     Label:
-        text: "Name of Star Cluster:"
+        text: "Distance from Observer to Image:"
         size_hint: 0.4, 0.05
-        pos_hint: {"x":0.1, "top":0.6}
+        pos_hint: {"x":0.1, "top":0.4}
 
     TextInput:
-        pos_hint: {"x":0.5, "top":0.6}
+        pos_hint: {"x":0.5, "top":0.3}
         size_hint: 0.4, 0.07
         id: Metadata3
         multiline: False
         font_size: 12
 
-    Label:
-        text: "Name of Galaxy:"
-        size_hint: 0.4, 0.05
-        pos_hint: {"x":0.1, "top":0.5}
+#    Label:
+#        text: "Name of Galaxy:"
+#        size_hint: 0.4, 0.05
+#        pos_hint: {"x":0.1, "top":0.5}
 
-    TextInput:
-        pos_hint: {"x":0.5, "top":0.5}
-        size_hint: 0.4, 0.07
-        id: Metadata4
-        multiline: False
-        font_size: 12
+#    TextInput:
+#        pos_hint: {"x":0.5, "top":0.5}
+#        size_hint: 0.4, 0.07
+#        id: Metadata4
+#        multiline: False
+#        font_size: 12
 
-    Label:
-        text: "Name of Galaxy Cluster:"
-        size_hint: 0.4, 0.05
-        pos_hint: {"x":0.1, "top":0.4}
-
-    TextInput:
-        pos_hint: {"x":0.5, "top":0.4}
-        size_hint: 0.4, 0.07
-        id: Metadata5
-        multiline: False
-        font_size: 12
+#   Label:
+#       text: "Name of Galaxy Cluster:"
+#       size_hint: 0.4, 0.05
+#       pos_hint: {"x":0.1, "top":0.4}
+#
+#   TextInput:
+#       pos_hint: {"x":0.5, "top":0.4}
+#       size_hint: 0.4, 0.07
+#       id: Metadata5
+#       multiline: False
+#       font_size: 12
 
     Button:
         text: "Save"
-        size_hint: 0.8, 0.2
-        pos_hint: {"x":0.1, "y":0.1}
+        size_hint: 0.8, 0.1
+        pos_hint: {"x":0.1, "y":0.0}
         on_release: root.store_metadata()
         on_release: root.end()
 
@@ -165,6 +174,7 @@
         size_hint: 0.8, 0.8
         pos_hint: {"x":0.1, "y":0.13}
         opacity: 1
+        on_touch_down: root.savePixel()
 
     Label:
         text: "Click to apply lensing"
@@ -190,3 +200,89 @@
         size_hint: 0.4, 0.1
         pos_hint: {"x":0.3, "y":0.01}
         on_release: root.end()
+
+<LoadDialog>:
+    auto_dismiss: True
+    size_hint: .6,.75
+    BoxLayout:
+        orientation: 'vertical'
+        FileChooserListView:
+            id: fc
+            filters: root.filters
+            # path: app.config.get(md.device_name, 'lib_dir' )
+            path: root.path
+        BoxLayout:
+            size_hint_y: .1
+            Spinner:
+                text:'Drive'
+                values: drivepath.get_drive_names()
+                on_text: fc.path = drivepath.get_path(self.text)
+            Label:
+                # text: 'File Selected: ' + app.just_fname(fc.selection)
+                text_size: self.size
+                halign: 'center'
+                valign: 'center'
+                shorten: True
+                text: 'File: ' + ('<None>' if not fc.selection else pathlib.Path(fc.selection[0]).name)
+        BoxLayout:
+            size_hint_y: .1
+            orientation: 'horizontal'
+            Button:
+                text: 'Load'
+                disabled: 0==len(fc.selection)
+                on_release:
+                    # app.load_presets(fc.selection[0])
+                    print(f'File Selected: {fc.selection[0]}')
+                    root.saveSource(fc.selection[0])
+                    root.dismiss()
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+
+<SaveDialog>:
+    # title: 'Save the 16 preset buttons to a preset group file'
+    size_hint: .6,.75
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        FileChooserListView:
+            id: fc
+            filters: root.filters
+            # path: app.config.get(md.device_name, 'lib_dir' )
+            path: root.path
+            on_selection: text_input.text =  self.selection and self.selection[0] or ''
+        Label:
+            size_hint_y: .08
+            text_size: self.size
+            halign: 'center'
+            valign: 'center'
+            shorten: True
+            text: 'File: ' + ('<None>' if not fc.selection else pathlib.Path(fc.selection[0]).name)
+        BoxLayout:
+            size_hint_y: 0.1
+            Spinner:
+                size_hint_x: .25
+                text:'Drive'
+                values: drivepath.get_drive_names()
+                on_text: fc.path = drivepath.get_path(self.text)
+            TextInput:
+                size_hint_x: .75
+                id: text_input
+        BoxLayout:
+            size_hint_y: .1
+            orientation: 'horizontal'
+            Button:
+                text: 'Save'
+                #disabled: 0==len( fc.selection )
+                on_release:
+                    # app.save_presets( text_input.text, fc.path  )
+                    print(f'Write File: Path: {fc.path} file: {text_input.text}')
+                    root.dismiss()
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+
+<ErrorPopup>:
+    Button:	 
+        id: P_end_ok
+        text: "OK"

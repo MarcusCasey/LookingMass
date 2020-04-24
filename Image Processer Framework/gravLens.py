@@ -5,8 +5,8 @@ import math
 def gravLens(imageArray, centerX = 0.5, centerY = 0.5, thetaE = 0.1):
     imageWidth = len(imageArray)
     imageHeight = len(imageArray[0])
-    centerX *= imageWidth
-    centerY *= imageHeight
+    # centerX = imageWidth
+    # centerY = imageHeight
     thetaE *= min(imageWidth, imageHeight)
 
     modifiedImageArray = imageArray.copy()
