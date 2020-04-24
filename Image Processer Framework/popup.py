@@ -73,13 +73,20 @@ class LoadDialog(Popup):
         self.path = var['path']
         super().__init__(**var)
 
-class SaveDialog(MyPopup):
+class SaveDialog(Popup):
     filters = ListProperty()
     path = StringProperty()
+    source = StringProperty()
+
+    def saveDestinationPath(self, destinationpath = " "):
+        loadMetadata.destinationFilepath = destinationpath
+
+    def saveDestinationName(self, destinationname = ' '):
+        loadMetadata.destinationFilename = destinationname
 
     def __init__(self, **var):
-        filters = var['filters']
-        path = var['path']
+        self.filters = var['filters']
+        self.path = var['path']
         super().__init__(**var)
 
 class ErrorPopup(MyPopup):

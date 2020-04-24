@@ -18,6 +18,10 @@ class Widgets(Widget):
         self.startPopup.open()
         # def on_mouse_pos(self, pos):
 
+    def setWritePath(self):
+        self.startPopup = SaveDialog(filters = '', path = folderOut)
+        self.startPopup.open()
+
     def showImage(self):
         pass
         # UPLOAD IMAGE NOT IMPLEMENTED YET
@@ -53,7 +57,7 @@ class Widgets(Widget):
 
     def saveImage(self):
         self.pil_img = PIL_Image.fromarray(self.imageArray2)
-        self.save(folderOut + filename) # change to actual file path
+        self.save(loadMetadata.destinationFilepath + loadMetadata.destinationFilename) # change to actual file path
         self.unsavedData = False
 
     def processImage(self):
@@ -65,7 +69,8 @@ class Widgets(Widget):
         modifiedImageArray = gravLens(self.imageArray, loadMetadata.pixelCoordinates[1], loadMetadata.pixelCoordinates[0], 0.15)
 
         pil_img = PIL_Image.fromarray(modifiedImageArray)
-        file_out = folderOut + filename # change to actual file path
+        file_out = loadMetadata.destinationFilepath + loadMetadata.destinationFilename # change to actual file path
+        print("processImage()" + file_out)
         pil_img.save(file_out)
 
         self.ids.post_processed_image_label.opacity = 1

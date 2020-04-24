@@ -14,6 +14,13 @@ class physicsMetadata:
     sourceFile = ' '
     print("Name of File Input:", sourceFile)
 
+    # Destination of image from User
+    destinationFilepath = ' '
+    print("Name of File Output Path:", destinationFilepath)
+
+    destinationFilename = ' '
+    print("Name of File Output Name:", destinationFilename)
+
     # Pixel Coordinates associated with gravitaional lensing
     pixelCoordinates = (0,0)
 

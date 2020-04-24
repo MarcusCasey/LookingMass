@@ -18,15 +18,20 @@
         Button:
             pos_hint: {"x":0.1, "y":4.4}
             size_hint: 2.0, 0.5
+            text: "Saved Image Location"
+            on_release: root.setWritePath()
+        Button:
+            pos_hint: {"x":0.1, "y":3.9}
+            size_hint: 2.0, 0.5
             text: "Enter Metadata"
             on_release: root.requestMetadata()
         Button:
-            pos_hint: {"x":0.1, "y":3.9}
+            pos_hint: {"x":0.1, "y":3.4}
             size_hint: 2.0, 0.5
             text: "Lensing Coordinate Entry"
             on_release: root.GravLens_Generator()
         Button:
-            pos_hint: {"x":0.1, "y":3.4}
+            pos_hint: {"x":0.1, "y":2.9}
             size_hint: 2.0, 0.5
             text: "Process Image"
             on_release: root.processImage()
@@ -277,6 +282,8 @@
                 on_release:
                     # app.save_presets( text_input.text, fc.path  )
                     print(f'Write File: Path: {fc.path} file: {text_input.text}')
+                    root.saveDestinationPath(fc.path)
+                    root.saveDestinationName(text_input.text)
                     root.dismiss()
             Button:
                 text: 'Cancel'
