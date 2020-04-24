@@ -79,7 +79,7 @@ class SaveDialog(Popup):
     source = StringProperty()
 
     def saveDestinationPath(self, destinationpath = " "):
-        loadMetadata.destinationFilepath = destinationpath
+        loadMetadata.destinationFilepath = destinationpath + "/"
 
     def saveDestinationName(self, destinationname = ' '):
         loadMetadata.destinationFilename = destinationname
