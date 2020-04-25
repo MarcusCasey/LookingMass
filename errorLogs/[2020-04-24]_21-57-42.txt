@@ -1,0 +1,43 @@
+Traceback (most recent call last):
+  File "c:\Users\Nikita\Desktop\CS_426\Image Processer Framework\widgets.py", line 57, in load
+    self.imageArray = np.array(PIL_Image.open(filename))
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\PIL\Image.py", line 2809, in open
+    fp = builtins.open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: ' '
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:/Users/Nikita/Desktop/CS_426/Image Processer Framework/engine.py", line 64, in <module>
+    myApp.run()
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\app.py", line 950, in run
+    runTouchApp()
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\base.py", line 560, in runTouchApp
+    EventLoop.mainloop()
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\base.py", line 334, in mainloop
+    self.idle()
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\base.py", line 378, in idle
+    self.dispatch_input()
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\base.py", line 329, in dispatch_input
+    post_dispatch_input(*pop(0))
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\base.py", line 295, in post_dispatch_input
+    wid.dispatch('on_touch_up', me)
+  File "kivy\_event.pyx", line 709, in kivy._event.EventDispatcher.dispatch
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\uix\behaviors\button.py", line 179, in on_touch_up
+    self.dispatch('on_release')
+  File "kivy\_event.pyx", line 705, in kivy._event.EventDispatcher.dispatch
+  File "kivy\_event.pyx", line 1248, in kivy._event.EventObservers.dispatch
+  File "kivy\_event.pyx", line 1132, in kivy._event.EventObservers._dispatch
+  File "C:\Users\Nikita\AppData\Local\Programs\Python\Python38-32\lib\site-packages\kivy\lang\builder.py", line 57, in custom_callback
+    exec(__kvlang__.co_value, idmap)
+  File "c:\Users\Nikita\Desktop\CS_426\Image Processer Framework\my.kv", line 37, in <module>
+    on_release: root.processImage()
+  File "c:\Users\Nikita\Desktop\CS_426\Image Processer Framework\widgets.py", line 109, in processImage
+    self.loadImage()
+  File "c:\Users\Nikita\Desktop\CS_426\Image Processer Framework\widgets.py", line 80, in loadImage
+    self.load(loadMetadata.sourceFile)
+  File "c:\Users\Nikita\Desktop\CS_426\Image Processer Framework\widgets.py", line 60, in load
+    self.errorPopup = ErrorPopup(text="Error in reading file:\n" + type(error).__name__ + ":\n" + error.__str__())
+  File "c:\Users\Nikita\Desktop\CS_426\Image Processer Framework\popup.py", line 83, in __init__
+    self.add_widget(Label(text = text))
+NameError: name 'Label' is not defined

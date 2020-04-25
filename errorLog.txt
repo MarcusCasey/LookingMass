@@ -1,0 +1,7 @@
+[2020-04-24] 18:57:17: Goodbye World
+[2020-04-24] 19:00:15: 'Widgets' object is not callable
+[2020-04-24] 19:29:48: object.__init__() takes exactly one argument (the instance to initialize)
+[2020-04-24] 19:30:56: object.__init__() takes exactly one argument (the instance to initialize)
+[2020-04-24] 20:00:04: object.__init__() takes exactly one argument (the instance to initialize)
+[2020-04-24] 20:02:19: object.__init__() takes exactly one argument (the instance to initialize)
+[2020-04-24] 20:04:11: object.__init__() takes exactly one argument (the instance to initialize)

@@ -1,0 +1,1 @@
+object.__init__() takes exactly one argument (the instance to initialize)
