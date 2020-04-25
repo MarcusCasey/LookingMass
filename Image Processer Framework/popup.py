@@ -69,7 +69,7 @@ class FileSelector(Popup):
 
     def saveSelection(self, selection = ' '):
         directory, filename = os.path.split(selection)
-        directory += '/'
+        directory += os.sep
         self.onSelection(directory, filename)
 
     def __init__(self, onSelection, **var):

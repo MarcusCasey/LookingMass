@@ -5,8 +5,11 @@ from PIL import Image as PIL_Image #needed as we now have multiple libraries tha
 import numpy as np
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
 import os
 import threading
+import time
 
 folderIn = os.getcwd()
 folderOut = "./data_output/"
@@ -25,6 +28,7 @@ class Widgets(Widget):
     def sourceSelected(self, directory, filename):
         loadMetadata.inDirectory = directory
         loadMetadata.inFilename = filename
+        #print("Source file selected: " + directory + filename)
         self.showPreImage()
 
     def selectDestination(self):
@@ -35,6 +39,7 @@ class Widgets(Widget):
     def destinationSelected(self, directory, filename):
         loadMetadata.outDirectory = directory
         loadMetadata.outFilename = filename
+        #print("Destination file selected: " + directory + filename)
         self.showPostImage()
 
     # Displays the image selected in self.uploadImage().
@@ -45,9 +50,11 @@ class Widgets(Widget):
     
     # Displays the modified image.
     def showPostImage(self):
+        print("showing")
         self.ids.post_processed_image_label.opacity = 1
         self.ids.post_processed_image.source = loadMetadata.outDirectory + loadMetadata.outFilename
         self.ids.post_processed_image.opacity = 1
+        self.ids.post_processed_image.reload()
 
     # Loads the requested file and stores it as a numpy array of pixels (format may vary).
     # There is an error popup in case of exceptions.
@@ -77,16 +84,17 @@ class Widgets(Widget):
     # Requests loading of data using the the stored filename.
     # This function is called by self.processImage().
     def loadImage(self):
-        self.load(loadMetadata.sourceFile)
-        self.imageLoaded = True
+        success = self.load(loadMetadata.inDirectory + loadMetadata.inFilename)
+        self.imageLoaded = success
 
     # Requests saving of data.
     # This function is called by self.processImage().
     def saveImage(self):
-        success = self.save(folderOut + filename) # change to actual file path
+        success = self.save(loadMetadata.outDirectory + loadMetadata.outFilename)
         if success:
             self.unsavedData = False
-
+    def test(self):
+        print("test")
     # MDS = Modify, Display, Save
     # This function is completed in a separate thread.
     def MDS(self):
@@ -96,24 +104,33 @@ class Widgets(Widget):
             if self.imageLoaded:
                 self.modifiedImageArray = gravLens(self.imageArray, loadMetadata.pixelCoordinates[1], loadMetadata.pixelCoordinates[0], 0.15)
                 self.modifiedImage = PIL_Image.fromarray(self.modifiedImageArray)
-                self.showPostImage()
                 self.saveImage()
+                self.startPopup.end()
         except Exception as error:
+            self.startPopup.end()
             self.errorPopup = ErrorPopup(text="Error in processing image:\n" + type(error).__name__ + ":\n" + error.__str__())
             self.errorPopup.show()
         else:
-            self.endPopup = ImageProcessingEndPopup("Image Processor")
-            self.endPopup.show()
-        finally:
-            self.startPopup.end()
+            if self.imageLoaded:
+                def on_dismiss(instance):
+                    self.showPostImage()
+                box = BoxLayout(orientation='vertical')
+                box.add_widget(Label(text="Process Finished."))
+                button = Button(text='Okay')
+                box.add_widget(button)
+                self.endPopup = Popup(title="Image Processor", content=box, size_hint=(None, None), 
+                                            size=(600, 200))
+                button.bind(on_release=self.endPopup.dismiss)
+                self.endPopup.bind(on_dismiss=on_dismiss)
+                self.endPopup.open()
 
     # Responsible for processing the image when the user requests such from the main GUI.
     # This function both loads the file selected from self.uploadImage() using self.loadImage()
     # and saves it upon completion using self.saveImage().
     def processImage(self):
         self.startPopup = ImageProcessingStartPopup("Image Processor")
+        self.startPopup.bind(on_dismiss=self.test)
         self.startPopup.show()
-
         mds = threading.Thread(target=self.MDS, args=(), daemon=True)
         mds.start()
             
