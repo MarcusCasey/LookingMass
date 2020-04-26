@@ -8,30 +8,30 @@
         Button:
             pos_hint: {"x":0.1, "y":5.4}
             size_hint: 2.0, 0.5
-            text: "Upload Image"
-            on_release: root.uploadImage()
+            text: "Select Source"
+            on_release: root.selectSource()
         Button:
             pos_hint: {"x":0.1, "y":4.9}
             size_hint: 2.0, 0.5
-            text: "Show Image"
-            on_release: root.showImage()
+            text: "Select Destination"
+            on_release: root.selectDestination()
+#       Button:
+#           pos_hint: {"x":0.1, "y":4.9}
+#           size_hint: 2.0, 0.5
+#           text: "Show Image"
+#           on_release: root.showPreImage()
         Button:
             pos_hint: {"x":0.1, "y":4.4}
-            size_hint: 2.0, 0.5
-            text: "Saved Image Location"
-            on_release: root.setWritePath()
-        Button:
-            pos_hint: {"x":0.1, "y":3.9}
             size_hint: 2.0, 0.5
             text: "Enter Metadata"
             on_release: root.requestMetadata()
         Button:
-            pos_hint: {"x":0.1, "y":3.4}
+            pos_hint: {"x":0.1, "y":3.9}
             size_hint: 2.0, 0.5
             text: "Lensing Coordinate Entry"
-            on_release: root.GravLens_Generator()
+            on_release: root.selectCoordinates()
         Button:
-            pos_hint: {"x":0.1, "y":2.9}
+            pos_hint: {"x":0.1, "y":3.4}
             size_hint: 2.0, 0.5
             text: "Process Image"
             on_release: root.processImage()
@@ -74,7 +74,7 @@
         pos_hint: {"x":0.2, "top":1}
 
     Button:
-        id: P_start_ok
+        id: ok_button
         text: "OK"
         size_hint: 0.8, 0.2
         pos_hint: {"x":0.1, "y":0.1}
@@ -87,7 +87,7 @@
         pos_hint: {"x":0.2, "top":1}
 
     Button:
-        id: P_end_ok
+        id: ok_button
         text: "OK"
         size_hint: 0.8, 0.2
         pos_hint: {"x":0.1, "y":0.1}
@@ -170,7 +170,7 @@
         on_release: root.store_metadata()
         on_release: root.end()
 
-<GravLens_GeneratorPopup>:
+<CoordinateSelectorPopup>:
     Image: 
         id: GravLens_Image
         source: ""
@@ -201,12 +201,12 @@
         font_size: 8
 
     Button:
-        text: "Apply"
+        text: "Back"
         size_hint: 0.4, 0.1
         pos_hint: {"x":0.3, "y":0.01}
         on_release: root.end()
 
-<LoadDialog>:
+<FileSelector>:
     auto_dismiss: True
     size_hint: .6,.75
     BoxLayout:
@@ -238,7 +238,7 @@
                 on_release:
                     # app.load_presets(fc.selection[0])
                     print(f'File Selected: {fc.selection[0]}')
-                    root.saveSource(fc.selection[0])
+                    root.saveSelection(fc.selection[0])
                     root.dismiss()
             Button:
                 text: 'Cancel'
@@ -288,8 +288,16 @@
             Button:
                 text: 'Cancel'
                 on_release: root.dismiss()
-
 <ErrorPopup>:
-    Button:	 
-        id: P_end_ok
+    Label:
+        id: error_label
+        text: "<No error description provided.>"
+        size_hint: 0.6, 0.2
+        pos_hint: {"x":0.2, "top":1}
+
+    Button:
+        id: ok_button
         text: "OK"
+        size_hint: 0.8, 0.2
+        pos_hint: {"x":0.1, "y":0.1}
+        on_release: root.end()

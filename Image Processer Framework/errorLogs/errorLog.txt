@@ -1,0 +1,10 @@
+[2020-04-26] 15:28:08: name 'SaveDialog' is not defined
+[2020-04-26] 16:08:14: Parser: File "/home/ethanpark/Desktop/CS 425-426/LookingMass/Image Processer Framework/my.kv", line 147:
+...
+    145:#        pos_hint: {"x":0.1, "top":0.5}
+    146:
+>>  147:                    root.dismiss()
+    148:            Button:
+    149:                text: 'Cancel'
+...
+Invalid indentation (too many levels)
