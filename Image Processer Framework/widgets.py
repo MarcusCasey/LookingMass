@@ -32,6 +32,7 @@ class Widgets(Widget):
         self.showPreImage()
 
     def selectDestination(self):
+
         self.startPopup = SaveDialog(filters = '', path = folderOut)
         self.startPopup.open()
 
@@ -53,6 +54,7 @@ class Widgets(Widget):
         print("showing")
         self.ids.post_processed_image_label.opacity = 1
         self.ids.post_processed_image.source = outDirectory + outFilename
+
         self.ids.post_processed_image.opacity = 1
         self.ids.post_processed_image.reload()
 
@@ -161,6 +163,7 @@ class Widgets(Widget):
                 button.bind(on_release=self.endPopup.dismiss)
                 self.endPopup.bind(on_dismiss=on_dismiss)
                 self.endPopup.open()
+
 
     # Responsible for processing the image when the user requests such from the main GUI.
     # This function both loads the file selected from self.uploadImage() using self.loadImage()

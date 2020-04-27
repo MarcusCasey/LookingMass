@@ -4,6 +4,7 @@ import os
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+
 from kivy.uix.switch import Switch
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty, ListProperty, BooleanProperty
 
@@ -81,6 +82,7 @@ class FileSelector(Popup):
         directory, filename = os.path.split(selection)
         directory += os.sep
 
+
         loadMetadata.inDirectory = directory
         loadMetadata.inFilename = filename
 
@@ -88,6 +90,7 @@ class FileSelector(Popup):
 #        print("saveSelection(): " + loadMetadata.inFilename)
 
         self.onSelection(directory, filename)
+
 
     def __init__(self, onSelection, **var):
         self.filters = var['filters']
