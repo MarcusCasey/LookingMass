@@ -8,3 +8,6 @@
     149:                text: 'Cancel'
 ...
 Invalid indentation (too many levels)
+[2020-04-26] 16:39:45: list index out of range
+[2020-04-26] 17:12:25: 'MetadataEntryPopup' object has no attribute 'switch_callback'
+[2020-04-26] 17:30:23: must be str, not bool

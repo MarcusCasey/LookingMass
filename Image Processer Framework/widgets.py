@@ -49,10 +49,10 @@ class Widgets(Widget):
         self.ids.pre_processed_image.opacity = 1
     
     # Displays the modified image.
-    def showPostImage(self):
+    def showPostImage(self, outDirectory, outFilename):
         print("showing")
         self.ids.post_processed_image_label.opacity = 1
-        self.ids.post_processed_image.source = loadMetadata.outDirectory + loadMetadata.outFilename
+        self.ids.post_processed_image.source = outDirectory + outFilename
         self.ids.post_processed_image.opacity = 1
         self.ids.post_processed_image.reload()
 
@@ -83,15 +83,15 @@ class Widgets(Widget):
     
     # Requests loading of data using the the stored filename.
     # This function is called by self.processImage().
-    def loadImage(self):
-        success = self.load(loadMetadata.inDirectory + loadMetadata.inFilename)
+    def loadImage(self, inDirectory, inFilename):
+        success = self.load(inDirectory + inFilename)
         self.imageLoaded = success
 
     # Requests saving of data.
     # This function is called by self.processImage().
-    def saveImage(self):
-        print("saveImage(): " + loadMetadata.outDirectory + loadMetadata.outFilename)
-        success = self.save(loadMetadata.outDirectory + loadMetadata.outFilename)
+    def saveImage(self, outDirectory, outFilename):
+        print("saveImage(): " + outDirectory + outFilename)
+        success = self.save(outDirectory + outFilename)
         if success:
             self.unsavedData = False
     def test(self):
@@ -99,28 +99,65 @@ class Widgets(Widget):
     # MDS = Modify, Display, Save
     # This function is completed in a separate thread.
     def MDS(self):
-        try:
-            self.imageLoaded = False
-            self.loadImage()
-            if self.imageLoaded:
-                self.modifiedImageArray = gravLens(self.imageArray, loadMetadata.pixelCoordinates[1], loadMetadata.pixelCoordinates[0], 0.15)
-                self.modifiedImage = PIL_Image.fromarray(self.modifiedImageArray)
-                self.saveImage()
+        if (loadMetadata.batchProcessing == False):
+            try:
+                self.imageLoaded = False
+                self.loadImage(loadMetadata.inDirectory, loadMetadata.inFilename)
+                if self.imageLoaded:
+                    self.modifiedImageArray = gravLens(self.imageArray, loadMetadata.pixelCoordinates[1], loadMetadata.pixelCoordinates[0], 0.15)
+                    self.modifiedImage = PIL_Image.fromarray(self.modifiedImageArray)
+                    self.saveImage(loadMetadata.outDirectory, loadMetadata.outFilename)
+                    self.startPopup.end()
+            except Exception as error:
                 self.startPopup.end()
-        except Exception as error:
-            self.startPopup.end()
-            self.errorPopup = ErrorPopup(text="Error in processing image:\n" + type(error).__name__ + ":\n" + error.__str__())
-            self.errorPopup.show()
+                self.errorPopup = ErrorPopup(text="Error in processing image:\n" + type(error).__name__ + ":\n" + error.__str__())
+                self.errorPopup.show()
+            else:
+                if self.imageLoaded:
+                    def on_dismiss(instance):
+                        self.showPostImage(loadMetadata.outDirectory, loadMetadata.outFilename)
+                    box = BoxLayout(orientation='vertical')
+                    box.add_widget(Label(text="Process Finished."))
+                    button = Button(text='Okay')
+                    box.add_widget(button)
+                    self.endPopup = Popup(title="Image Processor", content=box, size_hint=(None, None), 
+                                                size=(600, 200))
+                    button.bind(on_release=self.endPopup.dismiss)
+                    self.endPopup.bind(on_dismiss=on_dismiss)
+                    self.endPopup.open()
         else:
-            if self.imageLoaded:
-                def on_dismiss(instance):
-                    self.showPostImage()
+                imageList = os.listdir(loadMetadata.inDirectory)
+
+#                print(imageList)
+                count = 1
+                for i in imageList:
+                    print(i)
+                    try:
+                        self.imageLoaded = False
+                        self.loadImage(loadMetadata.inDirectory, i)
+                        if self.imageLoaded:
+                            self.modifiedImageArray = gravLens(self.imageArray, loadMetadata.pixelCoordinates[1], loadMetadata.pixelCoordinates[0], 0.15)
+                            self.modifiedImage = PIL_Image.fromarray(self.modifiedImageArray)
+                            temp = 'b' + str(count) + '_' + loadMetadata.outFilename
+                            count = count + 1
+                            print("batch: " + temp)
+                            self.saveImage(loadMetadata.outDirectory, temp)
+                            self.startPopup.end()
+                    except Exception as error:
+                        self.startPopup.end()
+                        self.errorPopup = ErrorPopup(text="Error in processing image:\n" + type(error).__name__ + ":\n" + error.__str__())
+                        self.errorPopup.show()
+                    else:
+                        if self.imageLoaded:
+                            def on_dismiss(instance):
+                                self.showPostImage(loadMetadata.outDirectory, temp)
+
                 box = BoxLayout(orientation='vertical')
                 box.add_widget(Label(text="Process Finished."))
                 button = Button(text='Okay')
                 box.add_widget(button)
                 self.endPopup = Popup(title="Image Processor", content=box, size_hint=(None, None), 
-                                            size=(600, 200))
+                                      size=(600, 200))
                 button.bind(on_release=self.endPopup.dismiss)
                 self.endPopup.bind(on_dismiss=on_dismiss)
                 self.endPopup.open()
@@ -138,7 +175,7 @@ class Widgets(Widget):
 
     # Display the popup where users can enter metadata.
     def requestMetadata(self):
-        self.metaPopup = MetadataEntryPopup("Metadata")
+        self.metaPopup = MetadataEntryPopup("Enter Metadata")
         self.metaPopup.show()
 
     # Display the popup where users can select the coordinates using a GUI.

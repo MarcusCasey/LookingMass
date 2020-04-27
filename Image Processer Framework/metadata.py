@@ -31,4 +31,7 @@ class physicsMetadata:
 
     saveCoordinate = False
 
+    # determines whether the image processor will perform batch processing
+    batchProcessing = False
+
 

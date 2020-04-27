@@ -98,18 +98,18 @@
     data2: Metadata2.text
     data3: Metadata3.text
 
-    Label:
-        text: "Enter Metadata"
-        size_hint: 0.6, 0.2
-        pos_hint: {"x":0.2, "top":1}
+#    Label:
+#        text: "Enter Metadata"
+#        size_hint: 0.6, 0.2
+#        pos_hint: {"x":0.2, "top":1}
 
     Label:
         text: "Mass of the Gravitational Source:"
         size_hint: 0.4, 0.05
-        pos_hint: {"x":0.1, "top":0.8}
+        pos_hint: {"x":0.1, "top":1}
 
     TextInput:
-        pos_hint: {"x":0.5, "top":0.7}
+        pos_hint: {"x":0.5, "top":0.9}
         size_hint: 0.4, 0.07
         id: Metadata1
         multiline: False
@@ -118,10 +118,10 @@
     Label:
         text: "Distance from Observer to Source:"
         size_hint: 0.4, 0.05
-        pos_hint: {"x":0.1, "top":0.6}
+        pos_hint: {"x":0.1, "top":0.8}
 
     TextInput:
-        pos_hint: {"x":0.5, "top":0.5}
+        pos_hint: {"x":0.5, "top":0.7}
         size_hint: 0.4, 0.07
         id: Metadata2
         multiline: False
@@ -130,14 +130,26 @@
     Label:
         text: "Distance from Observer to Image:"
         size_hint: 0.4, 0.05
-        pos_hint: {"x":0.1, "top":0.4}
+        pos_hint: {"x":0.1, "top":0.6}
 
     TextInput:
-        pos_hint: {"x":0.5, "top":0.3}
+        pos_hint: {"x":0.5, "top":0.5}
         size_hint: 0.4, 0.07
         id: Metadata3
         multiline: False
         font_size: 12
+
+    Label:
+        text: "Process all other images this directory:"
+        size_hint: 0.4, 0.05
+        pos_hint: {"x":0.1, "top":0.3}
+    Switch:
+        pos_hint: {"x":0.6, "top":0.3}
+        size_hint: 0.4, 0.07
+        id: batch_processing_switch
+        active: False
+        on_active: root.switch_callback(self, self.active) 
+    
 
 #    Label:
 #        text: "Name of Galaxy:"

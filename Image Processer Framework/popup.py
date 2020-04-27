@@ -4,6 +4,7 @@ import os
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.uix.switch import Switch
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty, ListProperty, BooleanProperty
 
 loadMetadata = physicsMetadata()
@@ -59,7 +60,16 @@ class MetadataEntryPopup(MyPopup):
                 loadMetadata.massofGS = splitdata[0]
                 loadMetadata.distanceOtoS = splitdata[1]
                 loadMetadata.distanceOtoI = splitdata[2]
-                
+
+    # checks if batch processing switch is on or off
+    def switch_callback(self, switchObject, switchValue): 
+        if(switchValue): 
+            #print('Switch is ON') 
+            loadMetadata.batchProcessing = True
+        else: 
+            #print('Switch is OFF') 
+            loadMetadata.batchProcessing = False
+
     pass
 
 class FileSelector(Popup):
@@ -70,6 +80,13 @@ class FileSelector(Popup):
     def saveSelection(self, selection = ' '):
         directory, filename = os.path.split(selection)
         directory += os.sep
+
+        loadMetadata.inDirectory = directory
+        loadMetadata.inFilename = filename
+
+#        print("saveSelection(): " + loadMetadata.inDirectory)
+#        print("saveSelection(): " + loadMetadata.inFilename)
+
         self.onSelection(directory, filename)
 
     def __init__(self, onSelection, **var):
