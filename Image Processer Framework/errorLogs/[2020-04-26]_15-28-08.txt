@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "engine.py", line 64, in <module>
+    myApp.run()
+  File "/usr/lib/python3/dist-packages/kivy/app.py", line 855, in run
+    runTouchApp()
+  File "/usr/lib/python3/dist-packages/kivy/base.py", line 504, in runTouchApp
+    EventLoop.window.mainloop()
+  File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 747, in mainloop
+    self._mainloop()
+  File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 479, in _mainloop
+    EventLoop.idle()
+  File "/usr/lib/python3/dist-packages/kivy/base.py", line 342, in idle
+    self.dispatch_input()
+  File "/usr/lib/python3/dist-packages/kivy/base.py", line 327, in dispatch_input
+    post_dispatch_input(*pop(0))
+  File "/usr/lib/python3/dist-packages/kivy/base.py", line 293, in post_dispatch_input
+    wid.dispatch('on_touch_up', me)
+  File "kivy/_event.pyx", line 707, in kivy._event.EventDispatcher.dispatch
+  File "/usr/lib/python3/dist-packages/kivy/uix/behaviors/button.py", line 179, in on_touch_up
+    self.dispatch('on_release')
+  File "kivy/_event.pyx", line 703, in kivy._event.EventDispatcher.dispatch
+  File "kivy/_event.pyx", line 1214, in kivy._event.EventObservers.dispatch
+  File "kivy/_event.pyx", line 1098, in kivy._event.EventObservers._dispatch
+  File "/usr/lib/python3/dist-packages/kivy/lang/builder.py", line 64, in custom_callback
+    exec(__kvlang__.co_value, idmap)
+  File "/home/ethanpark/Desktop/CS 425-426/LookingMass/Image Processer Framework/my.kv", line 17, in <module>
+    on_release: root.selectDestination()
+  File "/home/ethanpark/Desktop/CS 425-426/LookingMass/Image Processer Framework/widgets.py", line 35, in selectDestination
+    self.startPopup = SaveDialog(filters = '', path = folderOut, onSelection = self.destinationSelected)
+NameError: name 'SaveDialog' is not defined

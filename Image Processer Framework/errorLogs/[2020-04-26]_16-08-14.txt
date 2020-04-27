@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "engine.py", line 64, in <module>
+    myApp.run()
+  File "/usr/lib/python3/dist-packages/kivy/app.py", line 828, in run
+    self.load_kv(filename=self.kv_file)
+  File "/usr/lib/python3/dist-packages/kivy/app.py", line 599, in load_kv
+    root = Builder.load_file(rfilename)
+  File "/usr/lib/python3/dist-packages/kivy/lang/builder.py", line 301, in load_file
+    return self.load_string(data, **kwargs)
+  File "/usr/lib/python3/dist-packages/kivy/lang/builder.py", line 368, in load_string
+    parser = Parser(content=string, filename=fn)
+  File "/usr/lib/python3/dist-packages/kivy/lang/parser.py", line 401, in __init__
+    self.parse(content)
+  File "/usr/lib/python3/dist-packages/kivy/lang/parser.py", line 510, in parse
+    objects, remaining_lines = self.parse_level(0, lines)
+  File "/usr/lib/python3/dist-packages/kivy/lang/parser.py", line 614, in parse_level
+    level + 1, lines[i:], spaces)
+  File "/usr/lib/python3/dist-packages/kivy/lang/parser.py", line 684, in parse_level
+    'Invalid indentation (too many levels)')
+kivy.lang.parser.ParserException: Parser: File "/home/ethanpark/Desktop/CS 425-426/LookingMass/Image Processer Framework/my.kv", line 147:
+...
+    145:#        pos_hint: {"x":0.1, "top":0.5}
+    146:
+>>  147:                    root.dismiss()
+    148:            Button:
+    149:                text: 'Cancel'
+...
+Invalid indentation (too many levels)
