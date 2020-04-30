@@ -69,6 +69,9 @@ def get_drive_names():
         names = ['/']
     return names
 
+
+def get_path(spinner_text):
+    
     """Used by the application to grab paths of files
 
     This function will grab the path of the selected file.
@@ -79,9 +82,7 @@ def get_drive_names():
         
             The input is the grabbed file name from the application
             which is then used to generate the full path based on the OS
-
         """
-def get_path(spinner_text):
     if platform == 'win':
         new_path = spinner_text[-3:-1] + '/'
     elif platform == 'macosx':
