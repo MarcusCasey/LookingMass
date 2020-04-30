@@ -11,3 +11,131 @@ Invalid indentation (too many levels)
 [2020-04-26] 16:39:45: list index out of range
 [2020-04-26] 17:12:25: 'MetadataEntryPopup' object has no attribute 'switch_callback'
 [2020-04-26] 17:30:23: must be str, not bool
+[2020-04-29] 17:05:00: Empty module name
+[2020-04-29] 17:11:34: on_request_close() got an unexpected keyword argument 'source'
+[2020-04-29] 17:59:59: name 'LoadDialog' is not defined
+[2020-04-29] 18:01:50: on_request_close() got an unexpected keyword argument 'source'
+[2020-04-29] 18:36:28: on_request_close() got an unexpected keyword argument 'source'
+[2020-04-29] 18:36:31: name 'folderIn' is not defined
+[2020-04-29] 18:36:50: name 'folderOut' is not defined
+[2020-04-29] 21:17:07: 'Widgets' object has no attribute 'test'
+[2020-04-29] 22:20:38: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 100:
+...
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+>>  100:    data4: Metadata4.text
+    101:
+    102:#    Label:
+...
+BuilderException: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 100:
+...
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+>>  100:    data4: Metadata4.text
+    101:
+    102:#    Label:
+...
+NameError: name 'Metadata4' is not defined
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 249, in create_handler
+    return eval(value, idmap), bound_list
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 100, in <module>
+    data4: Metadata4.text
+
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 692, in _apply_rule
+    rctx['ids'])
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 254, in create_handler
+    cause=tb)
+
+[2020-04-29] 22:21:34: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 100:
+...
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+>>  100:    data4: Metadata4.text
+    101:
+    102:#    Label:
+...
+BuilderException: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 100:
+...
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+>>  100:    data4: Metadata4.text
+    101:
+    102:#    Label:
+...
+NameError: name 'Metadata4' is not defined
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 249, in create_handler
+    return eval(value, idmap), bound_list
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 100, in <module>
+    data4: Metadata4.text
+
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 692, in _apply_rule
+    rctx['ids'])
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 254, in create_handler
+    cause=tb)
+
+[2020-04-29] 22:24:02: on_request_close() got an unexpected keyword argument 'source'
+[2020-04-29] 22:35:20: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 147:
+...
+    145:        size_hint: 0.4, 0.05
+    146:        pos_hint: {"x":0.1, "top":0.4}
+>>  147:        halign: left
+    148:
+    149:    TextInput:
+...
+BuilderException: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 147:
+...
+    145:        size_hint: 0.4, 0.05
+    146:        pos_hint: {"x":0.1, "top":0.4}
+>>  147:        halign: left
+    148:
+    149:    TextInput:
+...
+NameError: name 'left' is not defined
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 249, in create_handler
+    return eval(value, idmap), bound_list
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 147, in <module>
+    halign: left
+
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 692, in _apply_rule
+    rctx['ids'])
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 254, in create_handler
+    cause=tb)
+
+[2020-04-29] 22:35:56: on_request_close() got an unexpected keyword argument 'source'
+[2020-04-29] 22:52:31: 'super' object has no attribute '__getattr__'
+[2020-04-29] 22:56:52: 'super' object has no attribute '__getattr__'
+[2020-04-29] 22:57:17: 'Widgets' object has no attribute 'metaPopup'
+[2020-04-29] 23:00:05: on_request_close() got an unexpected keyword argument 'source'
+[2020-04-29] 23:05:58: invalid syntax (my.kv, line 97)
+[2020-04-29] 23:06:21: invalid syntax (my.kv, line 116)
+[2020-04-29] 23:06:29: invalid syntax (my.kv, line 116)
+[2020-04-29] 23:06:36: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97:
+...
+     95:
+     96:<MetadataEntryPopup>:
+>>   97:    data1: Metadata1.text
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+...
+BuilderException: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97:
+...
+     95:
+     96:<MetadataEntryPopup>:
+>>   97:    data1: Metadata1.text
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+...
+NameError: name 'Metadata1' is not defined
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 249, in create_handler
+    return eval(value, idmap), bound_list
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97, in <module>
+    data1: Metadata1.text
+
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 692, in _apply_rule
+    rctx['ids'])
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 254, in create_handler
+    cause=tb)
+
+[2020-04-29] 23:11:26: 'str' object has no attribute 'fetch_pixelcoord'
+[2020-04-29] 23:11:54: 'super' object has no attribute '__getattr__'
+[2020-04-29] 23:15:01: 'WindowSDL' object has no attribute 'coordPopup'
