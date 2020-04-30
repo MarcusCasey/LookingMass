@@ -1,0 +1,101 @@
+Traceback (most recent call last):
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 249, in create_handler
+    return eval(value, idmap), bound_list
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97, in <module>
+    data1: Metadata1.text
+NameError: name 'Metadata1' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 692, in _apply_rule
+    rctx['ids'])
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 254, in create_handler
+    cause=tb)
+kivy.lang.builder.BuilderException: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97:
+...
+     95:
+     96:<MetadataEntryPopup>:
+>>   97:    data1: Metadata1.text
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+...
+NameError: name 'Metadata1' is not defined
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 249, in create_handler
+    return eval(value, idmap), bound_list
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97, in <module>
+    data1: Metadata1.text
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "./engine.py", line 157, in <module>
+    myApp.run()
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/app.py", line 855, in run
+    runTouchApp()
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/base.py", line 504, in runTouchApp
+    EventLoop.window.mainloop()
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/core/window/window_sdl2.py", line 747, in mainloop
+    self._mainloop()
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/core/window/window_sdl2.py", line 479, in _mainloop
+    EventLoop.idle()
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/base.py", line 342, in idle
+    self.dispatch_input()
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/base.py", line 327, in dispatch_input
+    post_dispatch_input(*pop(0))
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/base.py", line 293, in post_dispatch_input
+    wid.dispatch('on_touch_up', me)
+  File "kivy/_event.pyx", line 707, in kivy._event.EventDispatcher.dispatch
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/uix/behaviors/button.py", line 179, in on_touch_up
+    self.dispatch('on_release')
+  File "kivy/_event.pyx", line 703, in kivy._event.EventDispatcher.dispatch
+  File "kivy/_event.pyx", line 1214, in kivy._event.EventObservers.dispatch
+  File "kivy/_event.pyx", line 1098, in kivy._event.EventObservers._dispatch
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 64, in custom_callback
+    exec(__kvlang__.co_value, idmap)
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 27, in <module>
+    on_release: root.requestMetadata()
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/widgets.py", line 414, in requestMetadata
+    self.metaPopup = MetadataEntryPopup("Enter Metadata")
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/popup.py", line 63, in __init__
+    FloatLayout.__init__(self)
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/uix/floatlayout.py", line 65, in __init__
+    super(FloatLayout, self).__init__(**kwargs)
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/uix/layout.py", line 76, in __init__
+    super(Layout, self).__init__(**kwargs)
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/uix/widget.py", line 361, in __init__
+    rule_children=rule_children)
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/uix/widget.py", line 469, in apply_class_lang_rules
+    rule_children=rule_children)
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 538, in apply
+    rule_children=rule_children)
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 707, in _apply_rule
+    e), cause=tb)
+kivy.lang.builder.BuilderException: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97:
+...
+     95:
+     96:<MetadataEntryPopup>:
+>>   97:    data1: Metadata1.text
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+...
+BuilderException: Parser: File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97:
+...
+     95:
+     96:<MetadataEntryPopup>:
+>>   97:    data1: Metadata1.text
+     98:    data2: Metadata2.text
+     99:    data3: Metadata3.text
+...
+NameError: name 'Metadata1' is not defined
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 249, in create_handler
+    return eval(value, idmap), bound_list
+  File "/home/aditya/Documents/Unr Stuff/CS 425 - Senior Project/Graphical User Interface/LookingMass/Image Processer Framework/my.kv", line 97, in <module>
+    data1: Metadata1.text
+
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 692, in _apply_rule
+    rctx['ids'])
+  File "/home/aditya/kivy_venv/lib/python3.6/site-packages/kivy/lang/builder.py", line 254, in create_handler
+    cause=tb)
+
