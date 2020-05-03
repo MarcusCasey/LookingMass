@@ -25,17 +25,24 @@ import math
 def gravLens(imageArray, centerX = 0.5, centerY = 0.5, thetaE = 0.1):
     """Generates gravitational lensing in an image.
 
-        This function... 
+        This function generates gravitational lensing an image by taking
+        the image, lensing position, and thetaE to calculate and generate
+        the lesning. It uses the helper functions polarCoords(),
+        cartCoords(), averageColor(), getPixel(), and magnifyIntensity()
+        to assist in calculations.
 
         Args:
 
-            imageArray: An array of pixels, assumed to be in RGB or RGBA 0-255 format
+            imageArray: An array of pixels, assumed to be in RGB or RGBA
+                0-255 format
             centerX: x-coordinate center of gravlens effect, ranging 0-1
             centerY: y-coordinate center of gravlens effect, ranging 0-1
-            thetaE: Einstein ring radius, expressed as a fraction of the image's smallest dimension (min of height and width)
+            thetaE: Einstein ring radius, expressed as a fraction of the
+                image's smallest dimension (min of height and width)
 
         Returns:
-            A duplicated array of pixels, with the appropriate image processing performed.
+            A duplicated array of pixels, with the appropriate image
+                processing performed.
             
     """
 
@@ -87,7 +94,9 @@ def gravLens(imageArray, centerX = 0.5, centerY = 0.5, thetaE = 0.1):
 def polarCoords(x, y):
         """Converts cartesian coordinates to polar coordinates.
 
-        This function... 
+        This function converts cartesian coordinates to polar
+        coordinates by taking in the coordinates x and y to
+        perform calculations.
 
         Args:
 
@@ -106,7 +115,9 @@ def polarCoords(x, y):
 def cartCoords(r, th):
     """Converts polar coordinates to cartesian coordinates.
 
-    This function... 
+        This function converts polar coordinates to cartesian
+        coordinates by taking in the coordinates r and theta to
+        perform calculations.
 
     Args:
 
@@ -126,7 +137,8 @@ def cartCoords(r, th):
 def averageColor(imageArray):
     """Finds color averages.
 
-    This function... 
+    This function finds color averages in the image array passed to
+    it.
 
     Args:
 
@@ -134,7 +146,8 @@ def averageColor(imageArray):
 
     Returns:
         
-        An RGB pixel with the arithmetic mean of the RGB values of the image
+        An RGB pixel with the arithmetic mean of the RGB values of
+        the image
             
     """
 
@@ -151,14 +164,17 @@ def averageColor(imageArray):
 def getPixel(imageArray, x, y, oobColor = (0, 0, 0)):
     """Gets image pixels.
 
-    This function... 
+    This function gets the image pixels from an image array by
+    using the image array and location to find the pixel. If
+    an out-of-bounds pixel selected, it will return oobColor.
 
     Args:
 
         imageArray: An array of pixels, assumed to be in RGB or RGBA
         x: The x'th pixel (floats are rounded down)
         y: The y'th pixel (floats are rounded down)
-        oobColor: The pixel to return if an out-of-bounds pixel is requested
+        oobColor: The pixel to return if an out-of-bounds pixel is
+            requested
 
     Returns:
         
@@ -174,7 +190,8 @@ def getPixel(imageArray, x, y, oobColor = (0, 0, 0)):
 def magnifyIntensity(pixel, mag):
     """Magnifies the intensity.
 
-    This function... 
+    This function magnifies the intensity of a certain pixel
+    by a certain amount (mag). 
 
     Args:
 
