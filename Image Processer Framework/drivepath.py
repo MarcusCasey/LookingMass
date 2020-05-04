@@ -1,6 +1,11 @@
 """ Return the drive names in the system 
 
-This file contains the methods used to grab the different drives using kivy's file explorer. Most of this code is original, however it was created using Kivy's documentation listed on their website, as well as reading into python's drive exploring capabilities. The code handles whether an operating system is windows, mac, or linux and adapts adequetly to allow file exploring to occur.
+This file contains the methods used to grab the different drives using 
+kivy's file explorer. Most of this code is original, however it was 
+created using Kivy's documentation listed on their website, as well as 
+reading into python's drive exploring capabilities. The code handles 
+whether an operating system is windows, mac, or linux and adapts 
+adequetly to allow file exploring to occur.
 
 
   Typical usage example:
